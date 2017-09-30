@@ -7,7 +7,7 @@ import static java.lang.Math.sqrt;
  * Class representing a point in a three-dimensional space.
  */
 class Point3D {
-    private final double x, y, z;
+    private double x, y, z;
 
 
     /**
@@ -44,6 +44,15 @@ class Point3D {
     }
 
     /**
+     * Setter for x coordinate of the point.
+     *
+     * @param x x coordinate
+     */
+    void x(double x) {
+        this.x = x;
+    }
+
+    /**
      * Returns the y coordinate of the point.
      *
      * @return y coordinate
@@ -53,12 +62,29 @@ class Point3D {
     }
 
     /**
+     * Setter for the y coordinate of the point.
+     *
+     * @param y y coordinate
+     */
+    void y(double y) {
+        this.y = y;
+    }
+
+    /**
      * Return the z coordinate of the point.
      *
      * @return z coordinate
      */
     double z() {
         return z;
+    }
+
+    /**
+     * Setter for the z coordinate of the point.
+     * @param z
+     */
+    void z(double z) {
+        this.z = z;
     }
 
     /**

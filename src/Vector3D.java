@@ -35,7 +35,7 @@ public class Vector3D {
     }
 
     /**
-     * Returns the x coordinate of the vector.
+     * Returns the x dimension of the vector.
      *
      * @return x coordinate
      */
@@ -44,21 +44,47 @@ public class Vector3D {
     }
 
     /**
-     * Returns the y coordinate of the vector.
+     * Setter for the x dimension of the vector.
      *
-     * @return y coordinate
+     * @param x x dimension
+     */
+    void x(double x) {
+        this.x = x;
+    }
+
+    /**
+     * Returns the y dimension of the vector.
+     *
+     * @return y dimension
      */
     double y() {
         return y;
     }
 
     /**
-     * Returns the z coordinate of the vector.
+     * Setter for the y dimension of the vector.
      *
-     * @return z coordinate
+     * @param y y dimension
+     */
+    void y(double y) {
+        this.y = y;
+    }
+
+    /**
+     * Returns the z dimension of the vector.
+     *
+     * @return z dimension
      */
     double z() {
         return z;
+    }
+
+    /**
+     * Setter for the z dimension of the vector.
+     * @param z
+     */
+    void z(double z) {
+        this.z = z;
     }
 
     /**
@@ -109,6 +135,7 @@ public class Vector3D {
      * @return cross product of two vectors
      */
     Vector3D crossProduct(Vector3D v) {
+        // todo check if correct
         return new Vector3D(
                 (this.y * v.z) - (this.z * v.y),
                 (this.z * v.x) - (this.x * v.z),
@@ -125,5 +152,15 @@ public class Vector3D {
         x /= length;
         y /= length;
         z /= length;
+    }
+
+    /**
+     * Returns a vector that is the additive inverse of the vector this method is called on,
+     * i.e. a vector of the same length pointing in the opposite direction.
+     *
+     * @return opposite vector
+     */
+    Vector3D inverseVector() {
+        return new Vector3D(-x, -y, -z);
     }
 }
