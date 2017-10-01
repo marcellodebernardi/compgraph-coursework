@@ -88,26 +88,6 @@ public class Vector3D {
     }
 
     /**
-     * Returns a string representation of vector with dimensions of the vector.
-     *
-     * @return string with vector dimensions
-     */
-    public String toString() {
-        return ("Vector3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
-    }
-
-    /**
-     * Creates a new Vector3D object which represents a vector with the same dimensions
-     * as the vector the method is called on.
-     *
-     * @return new Vector3D
-     * @throws CloneNotSupportedException
-     */
-    public Vector3D clone() throws CloneNotSupportedException {
-        return new Vector3D(x, y, z);
-    }
-
-    /**
      * Returns the norm of the vector
      *
      * @return norm of vector
@@ -162,5 +142,37 @@ public class Vector3D {
      */
     Vector3D inverseVector() {
         return new Vector3D(-x, -y, -z);
+    }
+
+    /**
+     * Returns a vector representing the transformation of this vector by a matrix passed as
+     * argument.
+     *
+     * @param matrix transformation matrix
+     * @return
+     */
+    Vector3D transform(Matrix matrix) {
+        // todo wtf
+        return null;
+    }
+
+    /**
+     * Returns a string representation of vector with dimensions of the vector.
+     *
+     * @return string with vector dimensions
+     */
+    public String toString() {
+        return ("Vector3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+    }
+
+    /**
+     * Creates a new Vector3D object which represents a vector with the same dimensions
+     * as the vector the method is called on.
+     *
+     * @return new Vector3D
+     * @throws CloneNotSupportedException
+     */
+    public Vector3D clone() throws CloneNotSupportedException {
+        return new Vector3D(x, y, z);
     }
 }

@@ -34,6 +34,16 @@ class Point3D {
         return new Point3D(0, 0, 0);
     }
 
+    static Vector3D faceNormal(Point3D p1, Point3D p2, Point3D p3){
+        // todo
+        return null;
+    }
+
+    static boolean isFrontFace(Point3D p1, Point3D p2, Point3D p3, Vector3D vpn){
+        // todo
+        return false;
+    }
+
     /**
      * Returns the x coordinate of the point.
      *
@@ -96,6 +106,28 @@ class Point3D {
      */
     double distance(Point3D p) {
         return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2) + pow(z - p.z, 2));
+    }
+
+    /**
+     * Returns a point representing the transformation of the point this method is called on
+     * by a matrix passed as argument.
+     *
+     * @param matrix transform matrix
+     * @return new point
+     */
+    Point3D transform(Matrix matrix) {
+        // todo wtf
+        return null;
+    }
+
+    /**
+     * Returns the vector between this point and the point passed as argument.
+     *
+     * @param point point to which new vector extends from this point
+     * @return new vector between this point and argument point
+     */
+    Vector3D vector(Point3D point){
+        return new Vector3D(point.x - x, point.y - y, point.z - z);
     }
 
     /**

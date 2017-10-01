@@ -120,6 +120,14 @@ public class GObject {
     }
 
     /**
+     * Transforms the GObject by the matrix given as argument
+     * @param matrix
+     */
+    void transform(Matrix matrix) {
+
+    }
+
+    /**
      * Returns a string representation of the object.
      *
      * @return
