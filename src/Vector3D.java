@@ -81,7 +81,7 @@ public class Vector3D {
 
     /**
      * Setter for the z dimension of the vector.
-     * @param z
+     * @param z z dimension
      */
     void z(double z) {
         this.z = z;
@@ -115,7 +115,6 @@ public class Vector3D {
      * @return cross product of two vectors
      */
     Vector3D crossProduct(Vector3D v) {
-        // todo check if correct
         return new Vector3D(
                 (this.y * v.z) - (this.z * v.y),
                 (this.z * v.x) - (this.x * v.z),
@@ -149,11 +148,17 @@ public class Vector3D {
      * argument.
      *
      * @param matrix transformation matrix
-     * @return
+     * @return a new vector transformed by the given matrix
      */
     Vector3D transform(Matrix matrix) {
-        // todo wtf
-        return null;
+        // todo this is not correct, check affine transformations
+        double[][] m = matrix.m;
+
+        double x = (m[0][0] * this.x) + (m[0][1] * this.y) + (m[0][2] * this.z);
+        double y = (m[1][0] * this.x) + (m[1][1] * this.y) + (m[1][2] * this.z);
+        double z = (m[2][0] * this.x) + (m[2][1] * this.y) + (m[2][2] * this.z);
+
+        return new Vector3D(x, y, z);
     }
 
     /**
@@ -170,7 +175,7 @@ public class Vector3D {
      * as the vector the method is called on.
      *
      * @return new Vector3D
-     * @throws CloneNotSupportedException
+     * @throws CloneNotSupportedException if cloning is not supported
      */
     public Vector3D clone() throws CloneNotSupportedException {
         return new Vector3D(x, y, z);

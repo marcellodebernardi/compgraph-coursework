@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -121,10 +122,11 @@ public class GObject {
 
     /**
      * Transforms the GObject by the matrix given as argument
-     * @param matrix
+     * @param matrix transformation matrix for all vertices
      */
     void transform(Matrix matrix) {
-
+        for (int i = 0; i < vertices.length; i++)
+            vertices[i] = vertices[i].transform(matrix);
     }
 
     /**

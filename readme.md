@@ -3,11 +3,11 @@
 GitHub project for the weekly lab coursework. Details for each
 lab below.
 
-### WEEK 1, Points and Vectors
+### WEEK 1, Points and Vectors - done
 The Implement data types representing points and vectors in 3D
 space, including basic operations on them.
 
-### WEEK 2, Faces and Objects
+### WEEK 2, Faces and Objects - done
 Implement a Face class and a GObject class, which use the
 classes from week 1 to store face vertices and face colors.
 

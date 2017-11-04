@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -34,14 +36,32 @@ class Point3D {
         return new Point3D(0, 0, 0);
     }
 
+    /**
+     * Returns the surface normal vector of a face defined by the three points
+     * passed as arguments.
+     *
+     * @param p1 first vertex of face
+     * @param p2 second vertex of face
+     * @param p3 third vertex of face
+     * @return surface normal vector
+     */
     static Vector3D faceNormal(Point3D p1, Point3D p2, Point3D p3){
-        // todo
-        return null;
+        // computes the surface normal of a face defined by the three argument points
+        return p1.vector(p2).crossProduct(p1.vector(p3));
     }
 
+    /**
+     * Returns true if the face defined by the three points passed as arguments is
+     * a front face from the viewpoint defined by the viewpoint vector.
+     *
+     * @param p1 first vertex of face
+     * @param p2 second vertex of face
+     * @param p3 third vertex of face
+     * @param vpn viewpoint vector
+     * @return true if front face
+     */
     static boolean isFrontFace(Point3D p1, Point3D p2, Point3D p3, Vector3D vpn){
-        // todo
-        return false;
+        return faceNormal(p1, p2, p3).dotProduct(vpn) > 0;
     }
 
     /**
@@ -116,8 +136,15 @@ class Point3D {
      * @return new point
      */
     Point3D transform(Matrix matrix) {
-        // todo wtf
-        return null;
+        double[][] m = matrix.m;
+
+        double x = (m[0][0] * this.x) + (m[0][1] * this.y) + (m[0][2] * this.z) + m[0][3];
+        double y = (m[1][0] * this.x) + (m[1][1] * this.y) + (m[1][2] * this.z) + m[1][3];
+        double z = (m[2][0] * this.x) + (m[2][1] * this.y) + (m[2][2] * this.z) + m[2][3];
+
+        double w = (m[3][0] * this.x) + (m[3][1] * this.y) + (m[3][2] * this.z) + m[3][3];
+
+        return new Point3D(x/w, y/w, z/w);
     }
 
     /**
