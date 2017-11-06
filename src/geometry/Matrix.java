@@ -1,3 +1,5 @@
+package geometry;
+
 /**
  * @author Marcello De Bernardi 01/10/2017.
  */
@@ -5,13 +7,13 @@ public class Matrix {
     double[][] m;             // Should be 4x4
 
 
-    Matrix() {
+    public Matrix() {
         m = new double[4][4];
         setIdentity();
     }
 
 
-    void setIdentity() {   /* Resets the matrix to the Identity matrix */
+    public void setIdentity() {   /* Resets the matrix to the Identity matrix */
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 if (i == j)
@@ -22,13 +24,13 @@ public class Matrix {
     }
 
     /**
-     * Returns a new Matrix representing the result of multiplying the matrix the method
-     * is called on by the matrix supplied as argument.
+     * Returns a new geometry.Matrix representing the result of multiplying the matrix
+     * the method is called on by the matrix supplied as argument.
      *
      * @param a matrix to multiply this matrix on
      * @return new matrix for multiplication result
      */
-    Matrix multiply(Matrix a) {
+    public Matrix multiply(Matrix a) {
         Matrix result = new Matrix();
 
         for (int i = 0; i < 4; i++)
@@ -41,14 +43,14 @@ public class Matrix {
         return result;
     }
 
-    void setTranslation(double tx, double ty, double tz) {
+    public void setTranslation(double tx, double ty, double tz) {
         this.setIdentity();
         m[0][3] = tx;
         m[1][3] = ty;
         m[2][3] = tz;
     }
 
-    void setRotationX(double a) {
+    public void setRotationX(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -60,7 +62,7 @@ public class Matrix {
         m[2][2] = cs;
     }
 
-    void setRotationY(double a) {
+    public void setRotationY(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -72,7 +74,7 @@ public class Matrix {
         m[2][2] = cs;
     }
 
-    void setRotationZ(double a) {
+    public void setRotationZ(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -89,7 +91,7 @@ public class Matrix {
      *
      * @return inverse matrix
      */
-    Matrix inverse() {
+    public Matrix inverse() {
         double det;
         int i, j;
         Matrix invM = new Matrix();

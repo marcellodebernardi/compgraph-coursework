@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package geometry;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
@@ -8,8 +8,8 @@ import static java.lang.Math.sqrt;
  * <p>
  * Class representing a point in a three-dimensional space.
  */
-class Point3D {
-    private double x, y, z;
+public class Point3D {
+    private final double x, y, z;
 
 
     /**
@@ -20,7 +20,7 @@ class Point3D {
      * @param Y y-coordinate of point
      * @param Z z-coordinate of point
      */
-    Point3D(double X, double Y, double Z) {
+    public Point3D(double X, double Y, double Z) {
         x = X;
         y = Y;
         z = Z;
@@ -28,7 +28,7 @@ class Point3D {
 
 
     /**
-     * Returns a Point3D placed at the origin of the coordinate space.
+     * Returns a geometry.Point3D placed at the origin of the coordinate space.
      *
      * @return point at origin of coordinate space
      */
@@ -60,7 +60,8 @@ class Point3D {
      * @param vpn viewpoint vector
      * @return true if front face
      */
-    static boolean isFrontFace(Point3D p1, Point3D p2, Point3D p3, Vector3D vpn){
+    public static boolean isFrontFace(Point3D p1, Point3D p2, Point3D p3, Vector3D vpn){
+        // todo should this be in Scene where it's used?
         return faceNormal(p1, p2, p3).dotProduct(vpn) > 0;
     }
 
@@ -69,17 +70,8 @@ class Point3D {
      *
      * @return x coordinate
      */
-    double x() {
+    public double x() {
         return x;
-    }
-
-    /**
-     * Setter for x coordinate of the point.
-     *
-     * @param x x coordinate
-     */
-    void x(double x) {
-        this.x = x;
     }
 
     /**
@@ -87,17 +79,8 @@ class Point3D {
      *
      * @return y coordinate
      */
-    double y() {
+    public double y() {
         return y;
-    }
-
-    /**
-     * Setter for the y coordinate of the point.
-     *
-     * @param y y coordinate
-     */
-    void y(double y) {
-        this.y = y;
     }
 
     /**
@@ -105,16 +88,8 @@ class Point3D {
      *
      * @return z coordinate
      */
-    double z() {
+    public double z() {
         return z;
-    }
-
-    /**
-     * Setter for the z coordinate of the point.
-     * @param z
-     */
-    void z(double z) {
-        this.z = z;
     }
 
     /**
@@ -138,12 +113,14 @@ class Point3D {
     Point3D transform(Matrix matrix) {
         double[][] m = matrix.m;
 
+        // x, y, z and w are homogeneous coordinates of the new point
+        // 4th term is of form m[n][n] because implicitly this.w = 1
         double x = (m[0][0] * this.x) + (m[0][1] * this.y) + (m[0][2] * this.z) + m[0][3];
         double y = (m[1][0] * this.x) + (m[1][1] * this.y) + (m[1][2] * this.z) + m[1][3];
         double z = (m[2][0] * this.x) + (m[2][1] * this.y) + (m[2][2] * this.z) + m[2][3];
-
         double w = (m[3][0] * this.x) + (m[3][1] * this.y) + (m[3][2] * this.z) + m[3][3];
 
+        // convert to 3-space coordinate
         return new Point3D(x/w, y/w, z/w);
     }
 
@@ -157,12 +134,8 @@ class Point3D {
         return new Vector3D(point.x - x, point.y - y, point.z - z);
     }
 
-    /**
-     * Returns a string representation of the point giving its coordinates
-     *
-     * @return point coordinates as string
-     */
+    @Override
     public String toString() {
-        return ("Point3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+        return ("geometry.Point3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
     }
 }

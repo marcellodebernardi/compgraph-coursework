@@ -1,3 +1,5 @@
+package graphics;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -6,39 +8,41 @@ import java.awt.image.BufferedImage;
  * @author Marcello De Bernardi 26/09/2017.
  */
 public class Animator extends JFrame {
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 300;
-    private static final int INTERVAL = 100;
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
+    private static final int INTERVAL = 500;
     private int R;
     private BufferedImage image;
 
 
     Animator() {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(WIDTH, HEIGHT);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
 
     /**
-     * Application entry point for 3D animation
+     * Application entry point for 2D animation
      * @param args cli arguments
      */
     public static void main(String[] args) {
         new Animator().loop();
     }
 
-    protected void animate(Graphics g) {
-        g.setColor(Color.RED);
-        R = R > 20 ? 0 : R + 1;
-        g.fillPolygon(new int[]{100, WIDTH / 2, R * 3}, new int[]{100, HEIGHT / 2, R * 3}, 3);
+    public final void paint(Graphics g) {
     }
 
     protected final void loop() {
+        image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = image.createGraphics();
+
+        // rendering settings
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         while (true) {
-            image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2 = image.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(Color.WHITE);
             g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -50,10 +54,14 @@ public class Animator extends JFrame {
                 Thread.sleep(INTERVAL);
             }
             catch (InterruptedException e) {
+                // do nothing
             }
         }
     }
 
-    public final void paint(Graphics g) {
+    protected void animate(Graphics g) {
+        g.setColor(Color.RED);
+        R = R > 150 ? 0 : R + 2;
+        g.fillPolygon(new int[]{500, 600, 600, 500}, new int[]{500, 500, 600, 600 + 3 * R}, 4);
     }
 }

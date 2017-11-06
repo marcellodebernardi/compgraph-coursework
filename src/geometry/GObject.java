@@ -1,9 +1,14 @@
+package geometry;
+
+
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * A GObject is a 3D mesh consisting of a set of vertices and faces.
+ * A geometry.GObject is a 3D mesh consisting of a set of vertices and faces.
  *
  * @author Marcello De Bernardi 26/09/2017.
  */
@@ -13,26 +18,32 @@ public class GObject {
 
 
     /**
-     * Constructor for GObject that uses directly passed Point3D and Face arrays.
+     * Constructor for geometry.GObject that uses directly passed
+     * geometry.Point3D and geometry.Face arrays.
      *
-     * @param vertices
-     * @param faces
+     * @param vertices array of points representing vertices of GObject
+     * @param faces    faces of the object
      */
-    GObject(Point3D[] vertices, Face[] faces) {
+    public GObject(Point3D[] vertices, Face[] faces) {
         this.vertices = vertices;
         this.faces = faces;
     }
 
     /**
-     * Constructor for GObject that reads in Point3D vertices and Face objects from a file.
+     * Constructor for geometry.GObject that reads in geometry.Point3D vertices
+     * and geometry.Face objects from a file.
      *
      * @param fileName path of data file for 3D object
      */
-    GObject(String fileName) {
+    public GObject(String fileName) throws FileNotFoundException {
         // todo break up into helper methods?
         // todo could make a helper method for the repeating if (hasNext) checks
 
-        Scanner scanner = new Scanner(fileName);
+        Scanner scanner = new Scanner(new File(fileName));
+
+        vertices = new Point3D[0];
+        faces = new Face[0];
+
         int vertexNumber = 0;
         int faceNumber = 0;
 
@@ -72,6 +83,7 @@ public class GObject {
             return;
         }
         faceNumber = scanner.nextInt();
+        faces = new Face[faceNumber];
 
         // get faces
         for (int i = 0; i < faceNumber; i++) {
@@ -91,51 +103,67 @@ public class GObject {
                 faceVertices[j] = scanner.nextInt();
             }
 
-            if (!scanner.hasNextInt()) {
+            if (!scanner.hasNextFloat()) {
                 System.err.println(this + ": failed to construct due to missing face color");
                 return;
             }
-            int color = scanner.nextInt();
+            float rColor = scanner.nextFloat();
+            float gColor = scanner.nextFloat();
+            float bColor = scanner.nextFloat();
 
-            faces[i] = new Face(faceVertices, new Color(color));
+            faces[i] = new Face(faceVertices, new Color(rColor, gColor, bColor));
         }
     }
 
 
     /**
-     * Returns the array of vertices of this GObject.
+     * Returns the array of vertices of this geometry.GObject.
      *
      * @return vertex array
      */
-    Point3D[] vertices() {
+    public Point3D[] vertices() {
         return vertices;
     }
 
     /**
-     * Returns the array of faces of this GObject.
+     * Returns an array of vertices with all vertices of the given Face.
+     * The method does not check whether the face belongs to the GObject,
+     * so ArrayIndexOutOfBoundExceptions may be thrown.
+     *
+     * @param
+     * @return
+     */
+    public Point3D[] vertices(Face face) throws ArrayIndexOutOfBoundsException {
+        int[] vertexIndices = face.vertexIndices();
+        Point3D[] faceVertices = new Point3D[vertexIndices.length];
+
+        for (int i = 0; i < faceVertices.length; i++)
+            faceVertices[i] = vertices[vertexIndices[i]];
+
+        return faceVertices;
+    }
+
+    /**
+     * Returns the array of faces of this geometry.GObject.
      *
      * @return face array
      */
-    Face[] faces() {
+    public Face[] faces() {
         return faces;
     }
 
     /**
-     * Transforms the GObject by the matrix given as argument
+     * Transforms the geometry.GObject by the matrix given as argument
+     *
      * @param matrix transformation matrix for all vertices
      */
-    void transform(Matrix matrix) {
+    public void transform(Matrix matrix) {
         for (int i = 0; i < vertices.length; i++)
             vertices[i] = vertices[i].transform(matrix);
     }
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return
-     */
+    @Override
     public String toString() {
-        /* Make it look nice to save your debugging time! */
-        return null;
+        return "Vertices: " + Arrays.asList(vertices) + "\nFaces: " + Arrays.asList(faces);
     }
 }
