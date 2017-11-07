@@ -50,12 +50,12 @@ class Scene {
             for (Face face : object.faces()) {
                 Point3D[] faceVertices = object.vertices(face);
 
-                /* if (!Point3D.isFrontFace(
+                if (!Point3D.isFrontFace(
                         faceVertices[0],
                         faceVertices[1],
                         faceVertices[2],
                         cam.getViewPlaneNormal()))
-                    continue; */
+                    continue;
                 // todo clipping
 
                 Point3D[] pixelPoints = cam.project(faceVertices);

@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class Animator extends JFrame {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
-    private static final int INTERVAL = 500;
+    private static final int INTERVAL = 10;
     private int R;
     private BufferedImage image;
 
@@ -35,6 +35,9 @@ public class Animator extends JFrame {
     public final void paint(Graphics g) {
     }
 
+    /**
+     * Main graphics loop to be inherited and used by all subclasses of Animator.
+     */
     protected final void loop() {
         image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
@@ -54,11 +57,12 @@ public class Animator extends JFrame {
                 Thread.sleep(INTERVAL);
             }
             catch (InterruptedException e) {
-                // do nothing
+                // continue
             }
         }
     }
 
+    // draws polygons on Graphics context, private because each animator has its own
     protected void animate(Graphics g) {
         g.setColor(Color.RED);
         R = R > 150 ? 0 : R + 2;

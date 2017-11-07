@@ -13,7 +13,7 @@ import static java.lang.Math.PI;
 
 public class ParallelAnimator extends Animator {
     private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
-    private Camera camera;
+    protected Camera camera;
     private Scene scene;
 
     public ParallelAnimator() throws FileNotFoundException {
@@ -40,8 +40,7 @@ public class ParallelAnimator extends Animator {
     protected void animate(Graphics g) {
         camera.setViewport(getWidth(), getHeight());
 
-        if (g == null || scene == null || camera == null)
-            return;
+        if (g == null || scene == null || camera == null) return;
 
         Matrix mX = new Matrix(), mY = new Matrix(), mZ = new Matrix();
         mX.setRotationX(-PI / 11);
