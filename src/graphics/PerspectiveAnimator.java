@@ -7,9 +7,17 @@ import java.io.FileNotFoundException;
 
 /**
  * @author Marcello De Bernardi 01/10/2017.
+ *
+ * A perspective animator differs from a ParallelAnimator only in its use of
+ * a PerspectiveCamera.
  */
 public class PerspectiveAnimator extends ParallelAnimator {
-    public PerspectiveAnimator() throws FileNotFoundException {
+
+    /**
+     * Constructs a new PerspectiveAnimator
+     * @throws FileNotFoundException if model files not found
+     */
+    PerspectiveAnimator() throws FileNotFoundException {
         setupCamera();
     }
 

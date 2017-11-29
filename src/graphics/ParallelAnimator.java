@@ -16,7 +16,7 @@ public class ParallelAnimator extends Animator {
     protected Camera camera;
     private Scene scene;
 
-    public ParallelAnimator() throws FileNotFoundException {
+    ParallelAnimator() throws FileNotFoundException {
         super();
 
         scene = new Scene(files);
@@ -33,7 +33,6 @@ public class ParallelAnimator extends Animator {
     }
 
     protected void setupCamera() {
-        // todo is this really necessary?
         camera = new Camera(-5, 5, -5, 5);
     }
 
@@ -43,9 +42,9 @@ public class ParallelAnimator extends Animator {
         if (g == null || scene == null || camera == null) return;
 
         Matrix mX = new Matrix(), mY = new Matrix(), mZ = new Matrix();
-        mX.setRotationX(-PI / 11);
-        mY.setRotationY(PI / 13);
-        mZ.setRotationZ(PI / 17);
+        mX.setRotationX(-PI / 400);
+        mY.setRotationY(PI / 400);
+        mZ.setRotationZ(PI / 400);
         scene.transform(mZ.multiply(mY.multiply(mX)));
 
         scene.draw(camera, g);

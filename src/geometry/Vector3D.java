@@ -27,7 +27,6 @@ public class Vector3D {
         this.z = z;
     }
 
-
     /**
      * Returns the x dimension of the vector.
      *
@@ -104,7 +103,7 @@ public class Vector3D {
      *
      * @return opposite vector
      */
-    Vector3D inverseVector() {
+    Vector3D inverse() {
         return new Vector3D(-x, -y, -z);
     }
 
@@ -138,5 +137,13 @@ public class Vector3D {
     @Override
     public Vector3D clone() throws CloneNotSupportedException {
         return new Vector3D(x, y, z);
+    }
+
+    @Override
+    public boolean equals(Object vector) {
+        return vector instanceof Vector3D
+                && x == ((Vector3D)vector).x()
+                && y == ((Vector3D)vector).y()
+                && z == ((Vector3D)vector).z();
     }
 }

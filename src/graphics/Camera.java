@@ -9,19 +9,20 @@ import geometry.Vector3D;
  */
 public class Camera {
     private double xMin, xMax, yMin, yMax;
-    private double fcp, bcp;  //NOT USED: front & back clippling planes
+    private double fcp, bcp;  // front & back clipping planes
     private double ax, bx, ay, by;
 
 
     /**
-     * todo constructs a camera
+     * Constructs a parallel camera with the arguments specifying
+     * the boundaries of the view plane.
      *
-     * @param xMin
-     * @param xMax
-     * @param yMin
-     * @param yMax
+     * @param xMin x lower bound
+     * @param xMax x upper bound
+     * @param yMin y lower bound
+     * @param yMax y upper bound
      */
-    public Camera(double xMin, double xMax, double yMin, double yMax) {
+    Camera(double xMin, double xMax, double yMin, double yMax) {
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
@@ -29,8 +30,9 @@ public class Camera {
     }
 
     public Vector3D getViewPlaneNormal() {
-        // todo
-        return new Vector3D(1, 1, 1);
+        // in parallel projections VPN is a vector
+        // pointing straight towards z
+        return new Vector3D(0, 0, 1);
     }
 
     /**
@@ -67,23 +69,24 @@ public class Camera {
     }
 
 
-    /* Transforms vertices from world coordinates to camera coordinates. In
-    orthographic projection camera coordinates and world coordinates are
-    the same */
-    private Point3D cameraTransform(final Point3D point) {
+    /**
+     * Transforms vertices from world coordinates to camera coordinates. In
+     * orthographic projection camera coordinates and world coordinates are
+     * the same */
+    protected Point3D cameraTransform(final Point3D point) {
         return point;
     }
 
-    /* Maps vertices in camera coordinates to points on the view plan. In other
-    words, projects 3D coordinates onto a 2D plane. In orthographic projection
-    world coordinates and view plane coordinates are the same, we simply
-    disregard z coordinate*/
-    private Point3D projectionTransform(final Point3D point) {
+    /** Maps vertices in camera coordinates to points on the view plan. In other
+     * words, projects 3D coordinates onto a 2D plane. In orthographic projection
+     * world coordinates and view plane coordinates are the same, we simply
+     * disregard z coordinate */
+    protected Point3D projectionTransform(final Point3D point) {
         return point;
     }
 
-    // Maps points on the view plane to a pixel on the viewing device.
-    private Point3D viewportTransform(final Point3D point) {
+    /** Maps points on the view plane to a pixel on the viewing device. */
+    protected Point3D viewportTransform(final Point3D point) {
         return new Point3D((ax + bx * point.x()), (ay + by * point.y()), 0);
     }
 }

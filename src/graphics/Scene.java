@@ -42,20 +42,22 @@ class Scene {
     /**
      * Draws polygons from the Scene onto the Graphics context using the
      * given Camera.
-     * @param cam
-     * @param gfx
+     * @param cam camera
+     * @param gfx graphics
      */
     void draw(Camera cam, Graphics gfx){
         for (GObject object : objects) {
             for (Face face : object.faces()) {
                 Point3D[] faceVertices = object.vertices(face);
 
+                // back face removal
                 if (!Point3D.isFrontFace(
                         faceVertices[0],
                         faceVertices[1],
                         faceVertices[2],
                         cam.getViewPlaneNormal()))
                     continue;
+
                 // todo clipping
 
                 Point3D[] pixelPoints = cam.project(faceVertices);

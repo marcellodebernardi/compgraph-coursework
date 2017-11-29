@@ -32,7 +32,7 @@ public class Point3D {
      *
      * @return point at origin of coordinate space
      */
-    static Point3D origin() {
+    public static Point3D origin() {
         return new Point3D(0, 0, 0);
     }
 
@@ -110,7 +110,7 @@ public class Point3D {
      * @param matrix transform matrix
      * @return new point
      */
-    Point3D transform(Matrix matrix) {
+    public Point3D transform(Matrix matrix) {
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new point
@@ -130,12 +130,20 @@ public class Point3D {
      * @param point point to which new vector extends from this point
      * @return new vector between this point and argument point
      */
-    Vector3D vector(Point3D point){
+    public Vector3D vector(Point3D point){
         return new Vector3D(point.x - x, point.y - y, point.z - z);
     }
 
     @Override
     public String toString() {
         return ("geometry.Point3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+    }
+
+    @Override
+    public boolean equals(Object point) {
+        return point instanceof Point3D
+                && x == ((Point3D)point).x()
+                && y == ((Point3D)point).y()
+                && z == ((Point3D)point).z();
     }
 }

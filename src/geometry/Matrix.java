@@ -13,14 +13,12 @@ public class Matrix {
     }
 
 
-    public void setIdentity() {   /* Resets the matrix to the Identity matrix */
+    public Matrix setIdentity() {   /* Resets the matrix to the Identity matrix */
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                if (i == j)
-                    m[i][i] = 1.0;
-
-                else
-                    m[i][j] = m[j][i] = 0.0;
+                if (i == j) m[i][i] = 1.0;
+                else m[i][j] = m[j][i] = 0.0;
+        return this;
     }
 
     /**
@@ -43,14 +41,16 @@ public class Matrix {
         return result;
     }
 
-    public void setTranslation(double tx, double ty, double tz) {
+    public Matrix setTranslation(double tx, double ty, double tz) {
         this.setIdentity();
         m[0][3] = tx;
         m[1][3] = ty;
         m[2][3] = tz;
+
+        return this;
     }
 
-    public void setRotationX(double a) {
+    public Matrix setRotationX(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -60,9 +60,11 @@ public class Matrix {
         m[2][1] = sn;
         m[1][2] = -sn;
         m[2][2] = cs;
+
+        return this;
     }
 
-    public void setRotationY(double a) {
+    public Matrix setRotationY(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -72,9 +74,11 @@ public class Matrix {
         m[2][0] = -sn;
         m[0][2] = sn;
         m[2][2] = cs;
+
+        return this;
     }
 
-    public void setRotationZ(double a) {
+    public Matrix setRotationZ(double a) {
         double cs, sn;
 
         this.setIdentity();
@@ -84,6 +88,24 @@ public class Matrix {
         m[0][1] = -sn;
         m[1][0] = sn;
         m[1][1] = cs;
+
+        return this;
+    }
+
+    /**
+     * Returns a transformation matrix for projecting a point in camera
+     * coordinates to view plane coordinates.
+     *
+     * @param distance distance between camera and view plane
+     * @return projection matrix
+     */
+    public Matrix setProjection(double distance) {
+        this.setIdentity();
+
+        m[3][3] = 0;
+        m[3][2] = 1/distance;
+
+        return this;
     }
 
     /**
