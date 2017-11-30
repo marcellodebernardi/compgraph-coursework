@@ -47,8 +47,6 @@ public class PerspectiveAnimator extends ParallelAnimator {
         ((PerspectiveCamera) camera).setCOP(new Point3D(0, 0, 3));
         camera.setFrontClippingPlane(3);
         camera.setBackClippingPlane(-50);
-
-        System.out.println(camera);
     }
 
 
@@ -60,18 +58,18 @@ public class PerspectiveAnimator extends ParallelAnimator {
         switch (e.getKeyChar()) {
             // camera translations
             case 'w':
-                ((PerspectiveCamera)camera).translateCOP(new Matrix().setTranslation(0, 0, -1));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -1));
                 camera.setFrontClippingPlane(camera.getFrontClippingPlane() -1);
                 camera.setBackClippingPlane(camera.getBackClippingPlane() -1);
                 break;
             case 'a':
-                ((PerspectiveCamera)camera).translateCOP(new Matrix().setTranslation(-1, 0, 0));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(-1, 0, 0));
                 break;
             case 'd':
-                ((PerspectiveCamera)camera).translateCOP(new Matrix().setTranslation(1, 0, 0));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(1, 0, 0));
                 break;
             case 's':
-                ((PerspectiveCamera)camera).translateCOP(new Matrix().setTranslation(0, 0, 1));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, 1));
                 camera.setFrontClippingPlane(camera.getFrontClippingPlane() + 1);
                 camera.setBackClippingPlane(camera.getBackClippingPlane() + 1);
                 break;

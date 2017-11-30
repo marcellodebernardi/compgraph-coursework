@@ -12,14 +12,21 @@ import java.io.FileNotFoundException;
 import static java.lang.Math.PI;
 
 public class ParallelAnimator extends Animator {
-    private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
     protected Camera camera;
+    private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
     private Scene scene;
+    private boolean surfaceNormals = false;
+    private boolean vertexNormals = false;
+    private boolean wireframe = true;
+
 
     ParallelAnimator() throws FileNotFoundException {
         super();
 
         scene = new Scene(files);
+
+        System.out.println(scene);
+
         setupCamera();
     }
 
@@ -48,6 +55,7 @@ public class ParallelAnimator extends Animator {
         mY.setRotationY(PI / 400);
         mZ.setRotationZ(PI / 400);
         scene.transform(mZ.multiply(mY.multiply(mX)));
+
 
         scene.draw(camera, g);
     }

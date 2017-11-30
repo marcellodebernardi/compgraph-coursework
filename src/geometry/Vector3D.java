@@ -11,7 +11,7 @@ import static java.lang.Math.sqrt;
  * class and does not support spurious changes.
  */
 public class Vector3D {
-    private final double x, y, z;
+    public double x, y, z;
 
 
     /**
@@ -27,31 +27,41 @@ public class Vector3D {
         this.z = z;
     }
 
-    /**
-     * Returns the x dimension of the vector.
-     *
-     * @return x coordinate
-     */
-    double x() {
-        return x;
+
+    public static Vector3D copy(Vector3D v) {
+        return new Vector3D(v.x, v.y, v.z);
     }
 
     /**
-     * Returns the y dimension of the vector.
+     * Returns the vector between this point and the point passed as argument.
      *
-     * @return y dimension
+     * @return new vector between this point and argument point
      */
-    double y() {
-        return y;
+    public static Vector3D vector(Point3D from, Point3D to){
+        return new Vector3D(to.x - from.x, to.y - from.y, to.z - from.z);
     }
 
     /**
-     * Returns the z dimension of the vector.
+     * Returns the cross product of the geometry.Vector3D it is called on with the
+     * geometry.Vector3D passed as argument.
      *
-     * @return z dimension
+     * @return cross product of two vectors
      */
-    double z() {
-        return z;
+    public static Vector3D crossProduct(Vector3D v1, Vector3D v2) {
+        return new Vector3D(
+                (v1.y * v2.z) - (v1.z * v2.y),
+                (v1.z * v2.x) - (v1.x * v2.z),
+                (v1.x * v2.y) - (v1.y * v2.x));
+    }
+
+    /**
+     * Returns the dot product of the geometry.Vector3D it is called on with the
+     * geometry.Vector3D passed as argument.
+     *
+     * @return dot product of two vectors
+     */
+    public static double dotProduct(Vector3D v1, Vector3D v2) {
+        return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
     }
 
     /**
@@ -59,41 +69,17 @@ public class Vector3D {
      *
      * @return norm of vector
      */
-    double L2norm() {
-        return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+    public static double L2norm(Vector3D v) {
+        return sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
     }
 
-    /**
-     * Returns the dot product of the geometry.Vector3D it is called on with the
-     * geometry.Vector3D passed as argument.
-     *
-     * @param v vector to calculate dot product with
-     * @return dot product of two vectors
-     */
-    double dotProduct(Vector3D v) {
-        return (this.x * v.x) + (this.y * v.y) + (this.z * v.z);
-    }
-
-    /**
-     * Returns the cross product of the geometry.Vector3D it is called on with the
-     * geometry.Vector3D passed as argument.
-     *
-     * @param v vector to calculate cross product with
-     * @return cross product of two vectors
-     */
-    Vector3D crossProduct(Vector3D v) {
-        return new Vector3D(
-                (this.y * v.z) - (this.z * v.y),
-                (this.z * v.x) - (this.x * v.z),
-                (this.x * v.y) - (this.y * v.x));
-    }
 
     /**
      * Changes the vector so as to transform it into a vector of length 1 which
      * points in the same direction as before.
      */
     Vector3D normalize() {
-        double length = L2norm();
+        double length = L2norm(this);
         return new Vector3D(x / length, y / length, z / length);
     }
 
@@ -114,8 +100,8 @@ public class Vector3D {
      * @param matrix transformation matrix
      * @return a new vector transformed by the given matrix
      */
-    Vector3D transform(Matrix matrix) {
-        // todo check if point logic works for vectors too
+    @SuppressWarnings("Duplicates")
+    public void transform(Matrix matrix) {
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new vector
@@ -125,8 +111,9 @@ public class Vector3D {
         double z = (m[2][0] * this.x) + (m[2][1] * this.y) + (m[2][2] * this.z) + m[2][3];
         double w = (m[3][0] * this.x) + (m[3][1] * this.y) + (m[3][2] * this.z) + m[3][3];
 
-        // convert to 3-space coordinate
-        return new Vector3D(x/w, y/w, z/w);
+        this.x = x/w;
+        this.y = y/w;
+        this.z = z/w;
     }
 
     @Override
@@ -142,8 +129,8 @@ public class Vector3D {
     @Override
     public boolean equals(Object vector) {
         return vector instanceof Vector3D
-                && x == ((Vector3D)vector).x()
-                && y == ((Vector3D)vector).y()
-                && z == ((Vector3D)vector).z();
+                && x == ((Vector3D)vector).x
+                && y == ((Vector3D)vector).y
+                && z == ((Vector3D)vector).z;
     }
 }

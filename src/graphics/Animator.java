@@ -49,7 +49,7 @@ public class Animator extends JFrame implements KeyListener {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         while (true) {
-            g2.setColor(Color.WHITE);
+            g2.setColor(Color.LIGHT_GRAY);
             g2.fillRect(0, 0, getWidth(), getHeight());
 
             animate(g2);

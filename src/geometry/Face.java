@@ -10,18 +10,20 @@ import java.util.Arrays;
  * @author Marcello De Bernardi 26/09/2017.
  */
 public class Face {
-    private int[] vertexIndices;
+    private final Point3D[] vertices;
     private Color color;
+    private Point3D centroid;
+    private Vector3D faceNormal;
 
 
     /**
      * Constructor for geometry.Face.
      *
-     * @param vertexIndices array containing geometry.GObject indices of vertices
-     * @param color         color of face
+     * @param vertices vertices associated with face
+     * @param color    color of face
      */
-    Face(int[] vertexIndices, Color color) {
-        this.vertexIndices = vertexIndices;
+    Face(Point3D[] vertices, Color color) {
+        this.vertices = vertices;
         this.color = color;
     }
 
@@ -29,8 +31,8 @@ public class Face {
     /**
      * Returns an array containing the geometry.GObject indices of the vertices of the geometry.Face.
      */
-    public int[] vertexIndices() {
-        return vertexIndices;
+    public Point3D[] vertices() {
+        return vertices;
     }
 
     /**
@@ -42,8 +44,67 @@ public class Face {
         return color;
     }
 
+    /**
+     * Sets a new color for the face.
+     *
+     * @param color new face color
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    /**
+     * Returns the centroid (geometric barycenter) of the face.
+     *
+     * @return centroid
+     */
+    public Point3D centroid() {
+        return centroid;
+    }
+
+    /**
+     * Calculates and sets the centroid of the face.
+     */
+    public void computeCentroid() {
+        double xAvg = 0;
+        double yAvg = 0;
+        double zAvg = 0;
+
+        for (Point3D p : vertices) {
+            xAvg += p.x;
+            yAvg += p.y;
+            zAvg += p.z;
+        }
+
+        centroid = new Point3D(
+                xAvg / vertices.length,
+                yAvg / vertices.length,
+                zAvg / vertices.length);
+    }
+
+    public Vector3D faceNormal() {
+        return faceNormal;
+    }
+
+    /**
+     * Computes the face surface's normal vector based on two vectors that
+     * define the plane of the face.
+     */
+    public void computeFaceNormal() {
+        Vector3D v1 = Vector3D.vector(vertices[0], (vertices[1]));
+        Vector3D v2 = Vector3D.vector(vertices[0], (vertices[2]));
+
+        faceNormal = Vector3D.crossProduct(v1, v2).normalize();
+
+        System.out.println(faceNormal);
+    }
+
+    public boolean isFrontFace(Vector3D viewplaneNormal) {
+        return Vector3D.dotProduct(faceNormal, viewplaneNormal) > 0;
+    }
+
     @Override
     public String toString() {
-        return "Vertex indices: " + Arrays.asList(vertexIndices) + "\nColor: " + color;
+        return "Vertices: " + Arrays.asList(vertices) + "\nColor: " + color;
     }
 }

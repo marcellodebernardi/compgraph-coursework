@@ -9,7 +9,7 @@ import static java.lang.Math.sqrt;
  * Class representing a point in a three-dimensional space.
  */
 public class Point3D {
-    private final double x, y, z;
+    public double x, y, z;
 
 
     /**
@@ -27,80 +27,18 @@ public class Point3D {
     }
 
 
-    /**
-     * Returns a geometry.Point3D placed at the origin of the coordinate space.
-     *
-     * @return point at origin of coordinate space
-     */
-    public static Point3D origin() {
-        return new Point3D(0, 0, 0);
-    }
-
-    /**
-     * Returns the surface normal vector of a face defined by the three points
-     * passed as arguments.
-     *
-     * @param p1 first vertex of face
-     * @param p2 second vertex of face
-     * @param p3 third vertex of face
-     * @return surface normal vector
-     */
-    static Vector3D faceNormal(Point3D p1, Point3D p2, Point3D p3){
-        // computes the surface normal of a face defined by the three argument points
-        return p1.vector(p2).crossProduct(p1.vector(p3));
-    }
-
-    /**
-     * Returns true if the face defined by the three points passed as arguments is
-     * a front face from the viewpoint defined by the viewpoint vector.
-     *
-     * @param p1 first vertex of face
-     * @param p2 second vertex of face
-     * @param p3 third vertex of face
-     * @param vpn viewpoint vector
-     * @return true if front face
-     */
-    public static boolean isFrontFace(Point3D p1, Point3D p2, Point3D p3, Vector3D vpn){
-        // todo should this be in Scene where it's used?
-        return faceNormal(p1, p2, p3).dotProduct(vpn) > 0;
-    }
-
-    /**
-     * Returns the x coordinate of the point.
-     *
-     * @return x coordinate
-     */
-    public double x() {
-        return x;
-    }
-
-    /**
-     * Returns the y coordinate of the point.
-     *
-     * @return y coordinate
-     */
-    public double y() {
-        return y;
-    }
-
-    /**
-     * Return the z coordinate of the point.
-     *
-     * @return z coordinate
-     */
-    public double z() {
-        return z;
+    public static Point3D copy(Point3D p) {
+        return new Point3D(p.x, p.y, p.z);
     }
 
     /**
      * Returns the distance in 3d space between the point on which
      * the method is called, and the point passed as argument.
      *
-     * @param p point to calculate distance from
      * @return distance scalar
      */
-    double distance(Point3D p) {
-        return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2) + pow(z - p.z, 2));
+    static double distance(Point3D p1, Point3D p2) {
+        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
     }
 
     /**
@@ -110,7 +48,8 @@ public class Point3D {
      * @param matrix transform matrix
      * @return new point
      */
-    public Point3D transform(Matrix matrix) {
+    @SuppressWarnings("Duplicates")
+    public void transform(Matrix matrix) {
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new point
@@ -121,29 +60,34 @@ public class Point3D {
         double w = (m[3][0] * this.x) + (m[3][1] * this.y) + (m[3][2] * this.z) + m[3][3];
 
         // convert to 3-space coordinate
-        return new Point3D(x/w, y/w, z/w);
+        this.x = x/w;
+        this.y = y/w;
+        this.z = z/w;
     }
 
     /**
-     * Returns the vector between this point and the point passed as argument.
+     * Returns a new point located at the coordinates given from translating
+     * this point by a given vector.
      *
-     * @param point point to which new vector extends from this point
-     * @return new vector between this point and argument point
+     * @param v translation vector
+     * @return translated point
      */
-    public Vector3D vector(Point3D point){
-        return new Vector3D(point.x - x, point.y - y, point.z - z);
+    public void translate(Vector3D v) {
+        x += v.x;
+        y += v.y;
+        x += v.z;
     }
 
     @Override
     public String toString() {
-        return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+        return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")") + super.toString();
     }
 
     @Override
     public boolean equals(Object point) {
         return point instanceof Point3D
-                && x == ((Point3D)point).x()
-                && y == ((Point3D)point).y()
-                && z == ((Point3D)point).z();
+                && x == ((Point3D)point).x
+                && y == ((Point3D)point).y
+                && z == ((Point3D)point).z;
     }
 }

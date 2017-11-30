@@ -8,11 +8,15 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class PerspectiveCamera extends Camera {
-    private Point3D cop;    // centre of projection
-    private Matrix m;       // camera transformation matrix
-    private Point3D vrp;    // view reference point: the origin of camera coordinating system
-    private Vector3D vpn;   // view plane normal (axis u)
-    private Vector3D vuv;   // view up vector (axis v)
+    private Point3D cop;                // centre of projection
+    private Vector3D vuv;               // view up vector (axis v)
+    private Matrix m;                   // camera transformation matrix
+    private Point3D vrp;                // view reference point: the origin of camera coordinating system
+    private Vector3D vpn;               // view plane normal (axis u)
+
+    private boolean surfaceNormals;
+    private boolean vertexNormals;
+    private boolean wireframe;
 
 
     /**
@@ -32,22 +36,28 @@ public class PerspectiveCamera extends Camera {
         vrp = new Point3D(0, 0, 0);
         vpn = new Vector3D(0, 0, 1);
         vuv = new Vector3D(0, 1, 0);
-
-        m.setIdentity();
     }
 
     public Vector3D getViewPlaneNormal() {
         return vpn;
     }
 
+    public boolean wireframe() {
+        return wireframe;
+    }
+
     @Override
     protected Point3D cameraTransform(final Point3D point) {
-        return point.transform(new Matrix().setTranslation(-cop.x(), -cop.y(), -cop.z()));
+        Point3D newPoint = new Point3D(point.x, point.y, point.z);
+        newPoint.transform(new Matrix().setTranslation(-cop.x, -cop.y, -cop.z));
+        return newPoint;
     }
 
     @Override
     protected Point3D projectionTransform(final Point3D point) {
-        return point.transform(new Matrix().setProjection(-cop.z()));
+        Point3D newPoint = new Point3D(point.x, point.y, point.z);
+        newPoint.transform(new Matrix().setProjection(-cop.z));
+        return newPoint;
     }
 
     /**
@@ -65,8 +75,9 @@ public class PerspectiveCamera extends Camera {
      *
      * @param transformation transformation matrix applied to the COP
      */
-    public void translateCOP(Matrix transformation) {
-        cop = cop.transform(transformation);
+    public void transform(Matrix transformation) {
+        cop.transform(transformation);
+        // todo vuv = vuv.transform(transformation);
     }
 
     public void setupUVN(Point3D vrp, Vector3D vpn, Vector3D vuv) {

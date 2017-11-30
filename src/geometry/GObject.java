@@ -36,16 +36,13 @@ public class GObject {
      * @param fileName path of data file for 3D object
      */
     public GObject(String fileName) throws FileNotFoundException {
-        // todo break up into helper methods?
-        // todo could make a helper method for the repeating if (hasNext) checks
-
         Scanner scanner = new Scanner(new File(fileName));
 
         vertices = new Point3D[0];
         faces = new Face[0];
 
-        int vertexNumber = 0;
-        int faceNumber = 0;
+        int numOfVertices = 0;
+        int numOfFaces = 0;
 
         // check for empty file
         if (!scanner.hasNext()) {
@@ -59,11 +56,11 @@ public class GObject {
             System.err.println(this + ": failed to construct due to missing number of vertices");
             return;
         }
-        vertexNumber = scanner.nextInt();
-        vertices = new Point3D[vertexNumber];
+        numOfVertices = scanner.nextInt();
+        vertices = new Point3D[numOfVertices];
 
         // get vertices
-        for (int i = 0; i < vertexNumber; i++) {
+        for (int i = 0; i < numOfVertices; i++) {
             double[] coordinates = new double[3];
 
             for (int j = 0; j < 3; j++) {
@@ -82,25 +79,25 @@ public class GObject {
             System.err.println(this + ": failed to construct due to missing number of faces");
             return;
         }
-        faceNumber = scanner.nextInt();
-        faces = new Face[faceNumber];
+        numOfFaces = scanner.nextInt();
+        faces = new Face[numOfFaces];
 
         // get faces
-        for (int i = 0; i < faceNumber; i++) {
-            int[] faceVertices;
+        for (int i = 0; i < numOfFaces; i++) {
+            int[] vertexIndices;
 
             if (!scanner.hasNextInt()) {
                 System.err.println(this + ": failed to construct due to missing number of face vertices");
                 return;
             }
-            faceVertices = new int[scanner.nextInt()];
+            vertexIndices = new int[scanner.nextInt()];
 
-            for (int j = 0; j < faceVertices.length; j++) {
+            for (int j = 0; j < vertexIndices.length; j++) {
                 if (!scanner.hasNextInt()) {
                     System.err.println(this + ": failed to construct due to missing vertex index");
                     return;
                 }
-                faceVertices[j] = scanner.nextInt();
+                vertexIndices[j] = scanner.nextInt();
             }
 
             if (!scanner.hasNextFloat()) {
@@ -110,6 +107,10 @@ public class GObject {
             float rColor = scanner.nextFloat();
             float gColor = scanner.nextFloat();
             float bColor = scanner.nextFloat();
+
+            Point3D[] faceVertices = new Point3D[vertexIndices.length];
+
+            for (int j = 0; j < vertexIndices.length; j++) faceVertices[j] = this.vertices[vertexIndices[j]];
 
             faces[i] = new Face(faceVertices, new Color(rColor, gColor, bColor));
         }
@@ -123,24 +124,6 @@ public class GObject {
      */
     public Point3D[] vertices() {
         return vertices;
-    }
-
-    /**
-     * Returns an array of vertices with all vertices of the given Face.
-     * The method does not check whether the face belongs to the GObject,
-     * so ArrayIndexOutOfBoundExceptions may be thrown.
-     *
-     * @param
-     * @return
-     */
-    public Point3D[] vertices(Face face) throws ArrayIndexOutOfBoundsException {
-        int[] vertexIndices = face.vertexIndices();
-        Point3D[] faceVertices = new Point3D[vertexIndices.length];
-
-        for (int i = 0; i < faceVertices.length; i++)
-            faceVertices[i] = vertices[vertexIndices[i]];
-
-        return faceVertices;
     }
 
     /**
@@ -158,8 +141,12 @@ public class GObject {
      * @param matrix transformation matrix for all vertices
      */
     public void transform(Matrix matrix) {
-        for (int i = 0; i < vertices.length; i++)
-            vertices[i] = vertices[i].transform(matrix);
+        for (Point3D vertex : vertices) vertex.transform(matrix);
+
+        for (Face f : faces) {
+            f.computeCentroid();
+            f.computeFaceNormal();
+        }
     }
 
     @Override

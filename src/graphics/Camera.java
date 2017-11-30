@@ -44,11 +44,13 @@ public class Camera {
      * @return point in pixel coordinates on screen
      */
     public final Point3D[] project(Point3D... points) {
+        Point3D[] newPoints = new Point3D[points.length];
+
         for (int i = 0; i < points.length; i++) {
-            points[i] = viewportTransform(projectionTransform(cameraTransform(points[i])));
+            newPoints[i] = viewportTransform(projectionTransform(cameraTransform(points[i])));
         }
 
-        return points;
+        return newPoints;
     }
 
     public void setViewport(int width, int height) {
@@ -122,6 +124,6 @@ public class Camera {
      * Maps points on the view plane to a pixel on the viewing device.
      */
     protected Point3D viewportTransform(final Point3D point) {
-        return new Point3D((ax + bx * point.x()), (ay + by * point.y()), 0);
+        return new Point3D((ax + bx * point.x), (ay + by * point.y), 0);
     }
 }
