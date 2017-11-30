@@ -33,8 +33,10 @@ public class ParallelAnimator extends Animator {
     }
 
     protected void setupCamera() {
+        // todo is this really necessary?
         camera = new Camera(-5, 5, -5, 5);
     }
+
 
     protected void animate(Graphics g) {
         camera.setViewport(getWidth(), getHeight());

@@ -4,6 +4,9 @@ package graphics;
 import geometry.Point3D;
 import geometry.Vector3D;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * @author Marcello De Bernardi 01/10/2017.
  */

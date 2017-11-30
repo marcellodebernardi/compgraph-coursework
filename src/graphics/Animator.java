@@ -2,12 +2,14 @@ package graphics;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 /**
  * @author Marcello De Bernardi 26/09/2017.
  */
-public class Animator extends JFrame {
+public class Animator extends JFrame implements KeyListener {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
     private static final int INTERVAL = 10;
@@ -36,7 +38,8 @@ public class Animator extends JFrame {
     }
 
     /**
-     * Main graphics loop to be inherited and used by all subclasses of Animator.
+     * Main graphics loop to be inherited and used by all subclasses of Animator,
+     * defining the core functionality common to all Animators.
      */
     protected final void loop() {
         image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -67,5 +70,20 @@ public class Animator extends JFrame {
         g.setColor(Color.RED);
         R = R > 150 ? 0 : R + 2;
         g.fillPolygon(new int[]{500, 600, 600, 500}, new int[]{500, 500, 600, 600 + 3 * R}, 4);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // todo
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // todo
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // todo
     }
 }
