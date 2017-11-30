@@ -4,9 +4,6 @@ package graphics;
 import geometry.Point3D;
 import geometry.Vector3D;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 /**
  * @author Marcello De Bernardi 01/10/2017.
  */
@@ -66,6 +63,36 @@ public class Camera {
         ay = 0 - (by * yMin);
     }
 
+    public double getFrontClippingPlane() {
+        return fcp;
+    }
+
+    /**
+     * Sets the distance of the front clipping plane from the origin in
+     * world coordinates. Greater positive values set the front clipping
+     * plane further from the origin.
+     *
+     * @param fcp front clipping plane
+     */
+    public void setFrontClippingPlane(double fcp) {
+        this.fcp = fcp;
+    }
+
+    public double getBackClippingPlane() {
+        return bcp;
+    }
+
+    /**
+     * Sets the distance of the back clipping plane from the origin in world
+     * coordinates. Greater negative values set the back clipping plane
+     * further from the origin.
+     *
+     * @param bcp back clipping plane
+     */
+    public void setBackClippingPlane(double bcp) {
+        this.bcp = bcp;
+    }
+
     @Override
     public String toString() {
         return null;
@@ -75,20 +102,25 @@ public class Camera {
     /**
      * Transforms vertices from world coordinates to camera coordinates. In
      * orthographic projection camera coordinates and world coordinates are
-     * the same */
+     * the same
+     */
     protected Point3D cameraTransform(final Point3D point) {
         return point;
     }
 
-    /** Maps vertices in camera coordinates to points on the view plan. In other
+    /**
+     * Maps vertices in camera coordinates to points on the view plan. In other
      * words, projects 3D coordinates onto a 2D plane. In orthographic projection
      * world coordinates and view plane coordinates are the same, we simply
-     * disregard z coordinate */
+     * disregard z coordinate
+     */
     protected Point3D projectionTransform(final Point3D point) {
         return point;
     }
 
-    /** Maps points on the view plane to a pixel on the viewing device. */
+    /**
+     * Maps points on the view plane to a pixel on the viewing device.
+     */
     protected Point3D viewportTransform(final Point3D point) {
         return new Point3D((ax + bx * point.x()), (ay + by * point.y()), 0);
     }

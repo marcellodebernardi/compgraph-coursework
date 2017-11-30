@@ -74,4 +74,15 @@ public class PerspectiveCamera extends Camera {
         this.vpn = vpn;
         this.vuv = vuv;
     }
+
+    @Override
+    public String toString() {
+        return "Camera:\n"
+                + "fcp: " + getFrontClippingPlane() + "\n"
+                + "bcp: " + getBackClippingPlane() + "\n"
+                + "cop: " + cop + "\n"
+                + "vrp: " + vrp + "\n"
+                + "vpn: " + vpn + "\n"
+                + "vuv: " + vuv + "\n";
+    }
 }

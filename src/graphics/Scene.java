@@ -27,8 +27,6 @@ class Scene {
     }
 
 
-    // todo needs an abstraction for complex scene transformations
-
     /**
      * Transforms the entire scene with a given 4D transformation matrix.
      * The transformation is applied to all objects in the scene.
@@ -58,7 +56,8 @@ class Scene {
                         cam.getViewPlaneNormal()))
                     continue;
 
-                // todo clipping
+                if (clip(cam, faceVertices[0], faceVertices[1], faceVertices[2]))
+                    continue;
 
                 Point3D[] pixelPoints = cam.project(faceVertices);
 
@@ -74,6 +73,16 @@ class Scene {
                 gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
             }
         }
+    }
+
+    private boolean clip(Camera cam, Point3D ... points) {
+        // todo proper clipping
+        // returns true if any of the points are beyond clipping planes
+        for (Point3D p : points) {
+            if (p.z() < cam.getBackClippingPlane() || p.z() > cam.getFrontClippingPlane())
+                return true;
+        }
+        return false;
     }
 
     @Override

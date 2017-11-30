@@ -136,7 +136,7 @@ public class Point3D {
 
     @Override
     public String toString() {
-        return ("geometry.Point3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+        return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")");
     }
 
     @Override

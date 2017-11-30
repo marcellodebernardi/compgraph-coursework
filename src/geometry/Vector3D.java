@@ -131,7 +131,7 @@ public class Vector3D {
 
     @Override
     public String toString() {
-        return ("geometry.Vector3D as string: (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+        return ("Vector (x,y,z) = (" + x + ", " + y + ", " + z + ")");
     }
 
     @Override
