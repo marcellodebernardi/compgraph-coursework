@@ -34,7 +34,11 @@ public class Animator extends JFrame implements KeyListener {
         new Animator().loop();
     }
 
-    public final void paint(Graphics g) {
+    public final void paintComponent(Graphics g) {
+    }
+
+    public void start() {
+        loop();
     }
 
     /**
@@ -55,7 +59,7 @@ public class Animator extends JFrame implements KeyListener {
             animate(g2);
 
             ((Graphics2D) getGraphics()).drawImage(image, 0, 0, null);
-            paint(getGraphics());
+            paintComponent(getGraphics());
             try {
                 Thread.sleep(INTERVAL);
             }

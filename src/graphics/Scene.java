@@ -17,6 +17,10 @@ class Scene {
     private double sourceIntensity;     // intensity of light source
     private double ambientIntensity;    // intensity of ambient light
 
+    public boolean drawSurfaceNormals;
+    public boolean drawVertexNormals;
+    public boolean wireframe;
+
 
     Scene(String[] fileName) throws FileNotFoundException {
         objects = new GObject[fileName.length];
@@ -50,18 +54,17 @@ class Scene {
      */
     void draw(Camera cam, Graphics gfx) {
         // todo z buffering for hidden surface occlusion
+        // todo refactor to make more legible
         for (GObject object : objects) {
             for (Face face : object.faces()) {
 
+                if (drawSurfaceNormals) drawSurfaceNormals(gfx, cam, face);
+
                 // back face removal
-                if (Vector3D.dotProduct(
-                        face.surfNormal,
-                        Vector3D.vector(face.centroid, ((PerspectiveCamera)cam).cop)) < 0)
-                    continue;
+                if (isBackFace(face, cam)) continue;
 
                 /* if (clip(cam, faceVertices[0], faceVertices[1], faceVertices[2]))
-                    continue;
-                */
+                    continue; */
 
                 Point3D[] pixelPoints = cam.project(face.vertices);
 
@@ -73,30 +76,26 @@ class Scene {
                     yCoordinates[i] = (int) pixelPoints[i].y;
                 }
 
-                if (false) {
-                    gfx.setColor(face.color);
-                    gfx.drawPolygon(xCoordinates, yCoordinates, pixelPoints.length);
-                }
-                else {
+                if (wireframe) {
                     gfx.setColor(flatShade(face));
                     gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
                 }
+                else {
+                    gfx.setColor(face.color);
+                    gfx.drawPolygon(xCoordinates, yCoordinates, pixelPoints.length);
+                }
 
-                Point3D centroid = Point3D.copy(face.centroid);
-                Point3D normalEnd = Point3D.copy(centroid);
-                normalEnd.transform(new Matrix().setTranslation(face.surfNormal.x, face.surfNormal.y, face.surfNormal.z));
-
-                centroid = cam.project(centroid)[0];
-                normalEnd = cam.project(normalEnd)[0];
-
-                gfx.setColor(Color.WHITE);
-                gfx.drawLine(
-                        (int) centroid.x,
-                        (int) centroid.y,
-                        (int) normalEnd.x,
-                        (int) normalEnd.y);
+                if (drawVertexNormals) continue;
             }
         }
+    }
+
+    private boolean isBackFace(Face face, Camera cam) {
+        Vector3D viewVector = cam instanceof PerspectiveCamera ?
+                Vector3D.vector(face.centroid, ((PerspectiveCamera)cam).cop)
+                : cam.getViewPlaneNormal();
+
+        return Vector3D.dotProduct(face.surfNormal, viewVector) < 0;
     }
 
     private boolean clip(Camera cam, Point3D... points) {
@@ -121,6 +120,26 @@ class Scene {
         int b = (int) (face.color.getBlue() * cosTheta * sourceIntensity + ambientIntensity);
 
         return new Color(r, g, b);
+    }
+
+    private void drawFace(Graphics gfx, Camera cam, Face face) {
+
+    }
+
+    private void drawSurfaceNormals(Graphics gfx, Camera cam, Face face) {
+        Point3D centroid = Point3D.copy(face.centroid);
+        Point3D normalEnd = Point3D.copy(centroid);
+        normalEnd.transform(new Matrix().setTranslation(face.surfNormal.x, face.surfNormal.y, face.surfNormal.z));
+
+        centroid = cam.project(centroid)[0];
+        normalEnd = cam.project(normalEnd)[0];
+
+        gfx.setColor(Color.WHITE);
+        gfx.drawLine(
+                (int) centroid.x,
+                (int) centroid.y,
+                (int) normalEnd.x,
+                (int) normalEnd.y);
     }
 
     @Override

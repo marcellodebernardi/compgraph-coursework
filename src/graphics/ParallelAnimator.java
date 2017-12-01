@@ -13,8 +13,8 @@ import static java.lang.Math.PI;
 
 public class ParallelAnimator extends Animator {
     protected Camera camera;
+    protected Scene scene;
     private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
-    private Scene scene;
     private boolean surfaceNormals = false;
     private boolean vertexNormals = false;
     private boolean wireframe = true;

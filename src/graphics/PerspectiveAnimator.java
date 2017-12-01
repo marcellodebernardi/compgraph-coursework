@@ -19,7 +19,7 @@ public class PerspectiveAnimator extends ParallelAnimator {
      *
      * @throws FileNotFoundException if model files not found
      */
-    PerspectiveAnimator() throws FileNotFoundException {
+    public PerspectiveAnimator() throws FileNotFoundException {
         setupCamera();
         this.addKeyListener(this);
     }
@@ -56,7 +56,19 @@ public class PerspectiveAnimator extends ParallelAnimator {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
-            // todo
+            // view modes
+            case '1':
+                scene.wireframe = false;
+                break;
+            case '2':
+                scene.wireframe = true;
+                break;
+            case '3':
+                scene.drawSurfaceNormals = !scene.drawSurfaceNormals;
+                break;
+            case '4':
+                scene.drawVertexNormals = !scene.drawVertexNormals;
+                break;
             // camera translations
             case 'w':
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -1));
@@ -77,7 +89,6 @@ public class PerspectiveAnimator extends ParallelAnimator {
             // camera rotations
             // camera zoom
         }
-        System.out.println(camera);
     }
 
     @Override

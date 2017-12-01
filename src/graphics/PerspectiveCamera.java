@@ -14,10 +14,6 @@ public class PerspectiveCamera extends Camera {
     public Point3D vrp;                // view reference point: the origin of camera coordinating system
     public Vector3D vpn;               // view plane normal (axis u)
 
-    private boolean surfaceNormals;
-    private boolean vertexNormals;
-    private boolean wireframe;
-
 
     /**
      * Constructs a PerspectiveCamera with the arguments indicating
@@ -40,10 +36,6 @@ public class PerspectiveCamera extends Camera {
 
     public Vector3D getViewPlaneNormal() {
         return vpn;
-    }
-
-    public boolean wireframe() {
-        return wireframe;
     }
 
     @Override
