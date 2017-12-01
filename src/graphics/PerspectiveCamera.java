@@ -8,11 +8,11 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class PerspectiveCamera extends Camera {
-    private Point3D cop;                // centre of projection
-    private Vector3D vuv;               // view up vector (axis v)
-    private Matrix m;                   // camera transformation matrix
-    private Point3D vrp;                // view reference point: the origin of camera coordinating system
-    private Vector3D vpn;               // view plane normal (axis u)
+    public Point3D cop;                // centre of projection
+    public Vector3D vuv;               // view up vector (axis v)
+    public Matrix m;                   // camera transformation matrix
+    public Point3D vrp;                // view reference point: the origin of camera coordinating system
+    public Vector3D vpn;               // view plane normal (axis u)
 
     private boolean surfaceNormals;
     private boolean vertexNormals;
@@ -49,7 +49,7 @@ public class PerspectiveCamera extends Camera {
     @Override
     protected Point3D cameraTransform(final Point3D point) {
         Point3D newPoint = new Point3D(point.x, point.y, point.z);
-        newPoint.transform(new Matrix().setTranslation(-cop.x, -cop.y, -cop.z));
+        newPoint.transform(m.setIdentity().setTranslation(-cop.x, -cop.y, -cop.z));
         return newPoint;
     }
 

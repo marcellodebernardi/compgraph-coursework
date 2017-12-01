@@ -52,16 +52,18 @@ class Scene {
         // todo z buffering for hidden surface occlusion
         for (GObject object : objects) {
             for (Face face : object.faces()) {
-                Point3D[] faceVertices = face.vertices();
 
                 // back face removal
-                // if (!face.isFrontFace(cam.getViewPlaneNormal())) continue;
+                if (Vector3D.dotProduct(
+                        face.surfNormal,
+                        Vector3D.vector(face.centroid, ((PerspectiveCamera)cam).cop)) < 0)
+                    continue;
 
                 /* if (clip(cam, faceVertices[0], faceVertices[1], faceVertices[2]))
                     continue;
                 */
 
-                Point3D[] pixelPoints = cam.project(faceVertices);
+                Point3D[] pixelPoints = cam.project(face.vertices);
 
                 int[] xCoordinates = new int[pixelPoints.length];
                 int[] yCoordinates = new int[pixelPoints.length];
@@ -71,8 +73,8 @@ class Scene {
                     yCoordinates[i] = (int) pixelPoints[i].y;
                 }
 
-                if (true) {
-                    gfx.setColor(face.color());
+                if (false) {
+                    gfx.setColor(face.color);
                     gfx.drawPolygon(xCoordinates, yCoordinates, pixelPoints.length);
                 }
                 else {
@@ -80,9 +82,9 @@ class Scene {
                     gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
                 }
 
-                Point3D centroid = Point3D.copy(face.centroid());
+                Point3D centroid = Point3D.copy(face.centroid);
                 Point3D normalEnd = Point3D.copy(centroid);
-                normalEnd.translate(face.faceNormal());
+                normalEnd.transform(new Matrix().setTranslation(face.surfNormal.x, face.surfNormal.y, face.surfNormal.z));
 
                 centroid = cam.project(centroid)[0];
                 normalEnd = cam.project(normalEnd)[0];
@@ -95,8 +97,6 @@ class Scene {
                         (int) normalEnd.y);
             }
         }
-
-        // System.out.println(this);
     }
 
     private boolean clip(Camera cam, Point3D... points) {
@@ -111,13 +111,14 @@ class Scene {
 
     // calculates the color
     private Color flatShade(Face face) {
-        Vector3D lightDirection = Vector3D.vector(face.centroid(), lightSource);
-        double cosTheta = Math.abs(Vector3D.dotProduct(lightDirection, face.faceNormal())
-                / (Vector3D.L2norm(lightDirection) * Vector3D.L2norm(face.faceNormal())));
+        Vector3D lightDirection = Vector3D.vector(face.centroid, lightSource);
+        double cosTheta = ((Vector3D.dotProduct(lightDirection, face.surfNormal)
+                / (Vector3D.L2norm(lightDirection) * Vector3D.L2norm(face.surfNormal))) + 1) / 2;
 
-        int r = (int) (face.color().getRed() * (cosTheta * sourceIntensity + ambientIntensity));
-        int g = (int) (face.color().getGreen() * (cosTheta * sourceIntensity + ambientIntensity));
-        int b = (int) (face.color().getBlue() * (cosTheta * sourceIntensity + ambientIntensity));
+        // todo fix out of bound values
+        int r = (int) (face.color.getRed() * cosTheta * sourceIntensity + ambientIntensity);
+        int g = (int) (face.color.getGreen() * cosTheta * sourceIntensity + ambientIntensity);
+        int b = (int) (face.color.getBlue() * cosTheta * sourceIntensity + ambientIntensity);
 
         return new Color(r, g, b);
     }

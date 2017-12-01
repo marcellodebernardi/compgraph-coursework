@@ -56,6 +56,7 @@ public class PerspectiveAnimator extends ParallelAnimator {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
+            // todo
             // camera translations
             case 'w':
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -1));

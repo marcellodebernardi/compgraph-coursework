@@ -10,10 +10,10 @@ import java.util.Arrays;
  * @author Marcello De Bernardi 26/09/2017.
  */
 public class Face {
-    private final Point3D[] vertices;
-    private Color color;
-    private Point3D centroid;
-    private Vector3D faceNormal;
+    public Point3D[] vertices;
+    public Color color;
+    public Point3D centroid;
+    public Vector3D surfNormal;
 
 
     /**
@@ -25,42 +25,11 @@ public class Face {
     Face(Point3D[] vertices, Color color) {
         this.vertices = vertices;
         this.color = color;
+
+        computeCentroid();
+        computeFaceNormal();
     }
 
-
-    /**
-     * Returns an array containing the geometry.GObject indices of the vertices of the geometry.Face.
-     */
-    public Point3D[] vertices() {
-        return vertices;
-    }
-
-    /**
-     * Returns the Color of the geometry.Face.
-     *
-     * @return face color
-     */
-    public Color color() {
-        return color;
-    }
-
-    /**
-     * Sets a new color for the face.
-     *
-     * @param color new face color
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
-     * Returns the centroid (geometric barycenter) of the face.
-     *
-     * @return centroid
-     */
-    public Point3D centroid() {
-        return centroid;
-    }
 
     /**
      * Calculates and sets the centroid of the face.
@@ -82,10 +51,6 @@ public class Face {
                 zAvg / vertices.length);
     }
 
-    public Vector3D faceNormal() {
-        return faceNormal;
-    }
-
     /**
      * Computes the face surface's normal vector based on two vectors that
      * define the plane of the face.
@@ -94,13 +59,11 @@ public class Face {
         Vector3D v1 = Vector3D.vector(vertices[0], (vertices[1]));
         Vector3D v2 = Vector3D.vector(vertices[0], (vertices[2]));
 
-        faceNormal = Vector3D.crossProduct(v1, v2).normalize();
-
-        System.out.println(faceNormal);
+        surfNormal = Vector3D.crossProduct(v1, v2).normalize();
     }
 
     public boolean isFrontFace(Vector3D viewplaneNormal) {
-        return Vector3D.dotProduct(faceNormal, viewplaneNormal) > 0;
+        return Vector3D.dotProduct(surfNormal, viewplaneNormal) > 0;
     }
 
     @Override

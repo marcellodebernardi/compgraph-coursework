@@ -22,11 +22,7 @@ public class ParallelAnimator extends Animator {
 
     ParallelAnimator() throws FileNotFoundException {
         super();
-
         scene = new Scene(files);
-
-        System.out.println(scene);
-
         setupCamera();
     }
 
@@ -40,7 +36,6 @@ public class ParallelAnimator extends Animator {
     }
 
     protected void setupCamera() {
-        // todo is this really necessary?
         camera = new Camera(-5, 5, -5, 5);
     }
 

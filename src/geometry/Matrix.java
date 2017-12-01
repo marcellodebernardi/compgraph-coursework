@@ -100,6 +100,7 @@ public class Matrix {
      * @return projection matrix
      */
     public Matrix setProjection(double distance) {
+        // fixme
         this.setIdentity();
 
         m[3][3] = 0;

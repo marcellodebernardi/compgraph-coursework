@@ -50,6 +50,7 @@ public class Point3D {
      */
     @SuppressWarnings("Duplicates")
     public void transform(Matrix matrix) {
+        // fixme
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new point
@@ -63,19 +64,6 @@ public class Point3D {
         this.x = x/w;
         this.y = y/w;
         this.z = z/w;
-    }
-
-    /**
-     * Returns a new point located at the coordinates given from translating
-     * this point by a given vector.
-     *
-     * @param v translation vector
-     * @return translated point
-     */
-    public void translate(Vector3D v) {
-        x += v.x;
-        y += v.y;
-        x += v.z;
     }
 
     @Override
