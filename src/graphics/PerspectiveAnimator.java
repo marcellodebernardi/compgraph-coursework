@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
  * a PerspectiveCamera.
  */
 public class PerspectiveAnimator extends ParallelAnimator {
+    private double movementSpeed = 1.0;
     /**
      * Constructs a new PerspectiveAnimator
      *
@@ -71,20 +72,20 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 break;
             // camera translations
             case 'w':
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -1));
-                camera.setFrontClippingPlane(camera.getFrontClippingPlane() -1);
-                camera.setBackClippingPlane(camera.getBackClippingPlane() -1);
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -movementSpeed));
+                System.out.println(camera);
                 break;
             case 'a':
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(-1, 0, 0));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(-movementSpeed, 0, 0));
+                System.out.println(camera);
                 break;
             case 'd':
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(1, 0, 0));
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(movementSpeed, 0, 0));
+                System.out.println(camera);
                 break;
             case 's':
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, 1));
-                camera.setFrontClippingPlane(camera.getFrontClippingPlane() + 1);
-                camera.setBackClippingPlane(camera.getBackClippingPlane() + 1);
+                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, movementSpeed));
+                System.out.println(camera);
                 break;
             // camera rotations
             // camera zoom

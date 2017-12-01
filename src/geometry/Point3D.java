@@ -49,8 +49,7 @@ public class Point3D {
      * @return new point
      */
     @SuppressWarnings("Duplicates")
-    public void transform(Matrix matrix) {
-        // fixme
+    public Point3D transform(Matrix matrix) {
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new point
@@ -64,11 +63,13 @@ public class Point3D {
         this.x = x/w;
         this.y = y/w;
         this.z = z/w;
+
+        return this;
     }
 
     @Override
     public String toString() {
-        return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")") + super.toString();
+        return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")");
     }
 
     @Override

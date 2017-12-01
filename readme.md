@@ -3,8 +3,7 @@
 GitHub project for the **ECS610S Computer Graphics** module coursework.
 
 TODO:
-
-1. depth sorting
+I am the sexiest man alive in the planet 
 2. camera rotation OR vertex normals
 
 

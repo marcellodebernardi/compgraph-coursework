@@ -8,10 +8,10 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class PerspectiveCamera extends Camera {
-    public Point3D cop;                // centre of projection
+    public Point3D cop;                // centre of projection, also origin of camera coordinates
     public Vector3D vuv;               // view up vector (axis v)
     public Matrix m;                   // camera transformation matrix
-    public Point3D vrp;                // view reference point: the origin of camera coordinating system
+    public Point3D vrp;                // view reference point: lies in view plane
     public Vector3D vpn;               // view plane normal (axis u)
 
 
@@ -27,7 +27,7 @@ public class PerspectiveCamera extends Camera {
     PerspectiveCamera(double xMin, double xMax, double yMin, double yMax) {
         super(xMin, xMax, yMin, yMax);
 
-        cop = new Point3D(0, 0, -4);
+        cop = new Point3D(0, 0, 4);
         m = new Matrix();
         vrp = new Point3D(0, 0, 0);
         vpn = new Vector3D(0, 0, 1);
@@ -40,16 +40,14 @@ public class PerspectiveCamera extends Camera {
 
     @Override
     protected Point3D cameraTransform(final Point3D point) {
-        Point3D newPoint = new Point3D(point.x, point.y, point.z);
-        newPoint.transform(m.setIdentity().setTranslation(-cop.x, -cop.y, -cop.z));
-        return newPoint;
+        return new Point3D(point.x, point.y, point.z)
+                .transform(m.setIdentity().setTranslation(-cop.x, -cop.y, -cop.z));
     }
 
     @Override
     protected Point3D projectionTransform(final Point3D point) {
-        Point3D newPoint = new Point3D(point.x, point.y, point.z);
-        newPoint.transform(new Matrix().setProjection(-cop.z));
-        return newPoint;
+        return new Point3D(point.x, point.y, point.z)
+                .transform(new Matrix().setProjection(cop.z - vrp.z));
     }
 
     /**
@@ -69,7 +67,7 @@ public class PerspectiveCamera extends Camera {
      */
     public void transform(Matrix transformation) {
         cop.transform(transformation);
-        // todo vuv = vuv.transform(transformation);
+        vrp.transform(transformation);
     }
 
     public void setupUVN(Point3D vrp, Vector3D vpn, Vector3D vuv) {
