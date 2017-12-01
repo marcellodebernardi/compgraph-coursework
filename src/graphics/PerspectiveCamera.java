@@ -47,16 +47,7 @@ public class PerspectiveCamera extends Camera {
     @Override
     protected Point3D projectionTransform(final Point3D point) {
         return new Point3D(point.x, point.y, point.z)
-                .transform(new Matrix().setProjection(cop.z - vrp.z));
-    }
-
-    /**
-     * Sets the center of projection for the camera.
-     *
-     * @param cop center of projection
-     */
-    public void setCOP(Point3D cop) {
-        this.cop = cop;
+                .transform(m.setProjection(cop.z - vrp.z));
     }
 
     /**
@@ -75,12 +66,6 @@ public class PerspectiveCamera extends Camera {
 
         bcp += change;
         fcp += change;
-    }
-
-    public void setupUVN(Point3D vrp, Vector3D vpn, Vector3D vuv) {
-        this.vrp = vrp;
-        this.vpn = vpn;
-        this.vuv = vuv;
     }
 
     @Override

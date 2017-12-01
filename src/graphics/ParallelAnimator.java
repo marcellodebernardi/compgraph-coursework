@@ -14,16 +14,15 @@ import static java.lang.Math.PI;
 public class ParallelAnimator extends Animator {
     protected Camera camera;
     protected Scene scene;
+    protected double animationSpeed;
     private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
-    private boolean surfaceNormals = false;
-    private boolean vertexNormals = false;
-    private boolean wireframe = true;
 
 
     ParallelAnimator() throws FileNotFoundException {
         super();
         scene = new Scene(files);
         setupCamera();
+        animationSpeed = 0.01;
     }
 
     public static void main(String[] args) {
@@ -46,9 +45,9 @@ public class ParallelAnimator extends Animator {
         if (g == null || scene == null || camera == null) return;
 
         Matrix mX = new Matrix(), mY = new Matrix(), mZ = new Matrix();
-        mX.setRotationX(-PI / 400);
-        mY.setRotationY(PI / 400);
-        mZ.setRotationZ(PI / 400);
+        mX.setRotationX(-animationSpeed);
+        mY.setRotationY(animationSpeed);
+        mZ.setRotationZ(animationSpeed);
         scene.transform(mZ.multiply(mY.multiply(mX)));
 
 

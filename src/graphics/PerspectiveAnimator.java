@@ -7,6 +7,8 @@ import geometry.Vector3D;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
+import static java.awt.event.KeyEvent.*;
+
 /**
  * @author Marcello De Bernardi 01/10/2017.
  * <p>
@@ -54,40 +56,39 @@ public class PerspectiveAnimator extends ParallelAnimator {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyChar()) {
+        switch (e.getKeyCode()) {
             // view modes
-            case '1':
+            case VK_1:
                 scene.wireframe = false;
                 break;
-            case '2':
+            case VK_2:
                 scene.wireframe = true;
                 break;
-            case '3':
+            case VK_3:
                 scene.drawSurfaceNormals = !scene.drawSurfaceNormals;
                 break;
-            case '4':
+            case VK_4:
                 scene.drawVertexNormals = !scene.drawVertexNormals;
                 break;
             // camera translations
-            case 'w':
+            case VK_W:
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -movementSpeed));
                 System.out.println(camera);
                 break;
-            case 'a':
+            case VK_A:
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(-movementSpeed, 0, 0));
                 System.out.println(camera);
                 break;
-            case 'd':
+            case VK_D:
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(movementSpeed, 0, 0));
                 System.out.println(camera);
                 break;
-            case 's':
+            case VK_S:
                 ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, movementSpeed));
                 System.out.println(camera);
                 break;
-            // camera rotations
             // zoom out
-            case 'q':
+            case VK_Q:
                 if (camera.currentZoom == 0) break;
                 camera.yMin--;
                 camera.yMax++;
@@ -96,7 +97,7 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 camera.currentZoom--;
                 break;
             // zoom in
-            case 'e':
+            case VK_E:
                 if (camera.currentZoom == camera.maxZoom) break;
                 camera.yMin++;
                 camera.yMax--;
@@ -104,6 +105,19 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 camera.xMax--;
                 camera.currentZoom++;
                 break;
+            case VK_UP:
+            case VK_KP_UP:
+                // ((PerspectiveCamera)camera).transform(new Matrix().setRotationX(1));
+                break;
+            // animation speed up
+            case VK_0:
+                animationSpeed += 0.01;
+                break;
+            // animation speed down
+            case VK_9:
+                animationSpeed -= 0.01;
+                break;
+
         }
     }
 
