@@ -1,7 +1,6 @@
 package graphics;
 
 import geometry.Matrix;
-import geometry.Point3D;
 import geometry.Vector3D;
 
 import java.awt.event.KeyEvent;
@@ -59,32 +58,29 @@ public class PerspectiveAnimator extends ParallelAnimator {
         switch (e.getKeyCode()) {
             // view modes
             case VK_1:
-                scene.wireframe = false;
+                scene.wireframe = !scene.wireframe;
                 break;
             case VK_2:
-                scene.wireframe = true;
-                break;
-            case VK_3:
                 scene.drawSurfaceNormals = !scene.drawSurfaceNormals;
                 break;
-            case VK_4:
+            case VK_3:
                 scene.drawVertexNormals = !scene.drawVertexNormals;
                 break;
             // camera translations
             case VK_W:
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, -movementSpeed));
+                ((PerspectiveCamera)camera).translate(new Vector3D(0, 0, -movementSpeed));
                 System.out.println(camera);
                 break;
             case VK_A:
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(-movementSpeed, 0, 0));
+                ((PerspectiveCamera)camera).translate(new Vector3D(-movementSpeed, 0,0));
                 System.out.println(camera);
                 break;
             case VK_D:
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(movementSpeed, 0, 0));
+                ((PerspectiveCamera)camera).translate(new Vector3D(movementSpeed, 0, 0));
                 System.out.println(camera);
                 break;
             case VK_S:
-                ((PerspectiveCamera)camera).transform(new Matrix().setTranslation(0, 0, movementSpeed));
+                ((PerspectiveCamera)camera).translate(new Vector3D(0, 0, movementSpeed));
                 System.out.println(camera);
                 break;
             // zoom out
@@ -107,7 +103,7 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 break;
             case VK_UP:
             case VK_KP_UP:
-                // ((PerspectiveCamera)camera).transform(new Matrix().setRotationX(1));
+                // ((PerspectiveCamera)camera).translate(new Matrix().setRotationX(1));
                 break;
             // animation speed up
             case VK_0:

@@ -75,7 +75,7 @@ public class Vector3D {
 
 
     /**
-     * Changes the vector so as to transform it into a vector of length 1 which
+     * Changes the vector so as to translate it into a vector of length 1 which
      * points in the same direction as before.
      */
     Vector3D normalize() {

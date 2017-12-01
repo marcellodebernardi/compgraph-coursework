@@ -62,7 +62,8 @@ class Scene {
 
         // back face elimination and clipping
         for (int i = 0; i < faces.size(); i++)
-            if (isBackFace(faces.get(i), cam) || clip(faces.get(i), cam)) faces.elim(i);
+            if ((!wireframe) && (isBackFace(faces.get(i), cam) || clip(faces.get(i), cam)))
+                faces.elim(i);
 
         // draw surface normals of back faces
         if (drawSurfaceNormals)
@@ -84,7 +85,7 @@ class Scene {
                 yCoordinates[j] = (int) pixelPoints[j].y;
             }
 
-            if (wireframe) {
+            if (!wireframe) {
                 gfx.setColor(flatShade(face));
                 gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
             }

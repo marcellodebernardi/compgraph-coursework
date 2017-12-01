@@ -45,7 +45,7 @@ public class Point3D {
      * Returns a point representing the transformation of the point this method is called on
      * by a matrix passed as argument.
      *
-     * @param matrix transform matrix
+     * @param matrix translate matrix
      * @return new point
      */
     @SuppressWarnings("Duplicates")
@@ -63,6 +63,14 @@ public class Point3D {
         this.x = x/w;
         this.y = y/w;
         this.z = z/w;
+
+        return this;
+    }
+
+    public Point3D add(Vector3D vector) {
+        x += vector.x;
+        y += vector.y;
+        z += vector.z;
 
         return this;
     }

@@ -54,18 +54,13 @@ public class PerspectiveCamera extends Camera {
      * Allows arbitrary translations on the center of projection, enabling
      * camera motion.
      *
-     * @param transformation transformation matrix applied to the COP
      */
-    public void transform(Matrix transformation) {
-        double change = cop.z;
+    public void translate(Vector3D vector) {
+        cop.add(vector);
+        vrp.add(vector);
 
-        cop.transform(transformation);
-        vrp.transform(transformation);
-
-        change = cop.z - change;
-
-        bcp += change;
-        fcp += change;
+        bcp += vector.z;
+        fcp += vector.z;
     }
 
     @Override
