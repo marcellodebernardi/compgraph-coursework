@@ -3,7 +3,6 @@
 GitHub project for the **ECS610S Computer Graphics** module coursework.
 
 TODO:
-1. clipping
 2. camera rotation OR vertex normals
 
 

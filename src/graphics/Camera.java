@@ -11,6 +11,7 @@ public class Camera {
     public double xMin, xMax, yMin, yMax;
     public double fcp, bcp;  // front & back clipping planes
     public double ax, bx, ay, by;
+    public double currentZoom, maxZoom;
 
 
     /**
@@ -27,6 +28,8 @@ public class Camera {
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
+        currentZoom = 0;
+        maxZoom = 4;
     }
 
     public Vector3D getViewPlaneNormal() {

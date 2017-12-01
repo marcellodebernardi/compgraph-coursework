@@ -86,7 +86,24 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 System.out.println(camera);
                 break;
             // camera rotations
-            // camera zoom
+            // zoom out
+            case 'q':
+                if (camera.currentZoom == 0) break;
+                camera.yMin--;
+                camera.yMax++;
+                camera.xMin--;
+                camera.xMax++;
+                camera.currentZoom--;
+                break;
+            // zoom in
+            case 'e':
+                if (camera.currentZoom == camera.maxZoom) break;
+                camera.yMin++;
+                camera.yMax--;
+                camera.xMin++;
+                camera.xMax--;
+                camera.currentZoom++;
+                break;
         }
     }
 
