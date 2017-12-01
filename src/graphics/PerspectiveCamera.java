@@ -27,7 +27,7 @@ public class PerspectiveCamera extends Camera {
     PerspectiveCamera(double xMin, double xMax, double yMin, double yMax) {
         super(xMin, xMax, yMin, yMax);
 
-        cop = new Point3D(0, 0, 4);
+        cop = new Point3D(0, 0, 3);
         m = new Matrix();
         vrp = new Point3D(0, 0, 0);
         vpn = new Vector3D(0, 0, 1);
@@ -66,8 +66,15 @@ public class PerspectiveCamera extends Camera {
      * @param transformation transformation matrix applied to the COP
      */
     public void transform(Matrix transformation) {
+        double change = cop.z;
+
         cop.transform(transformation);
         vrp.transform(transformation);
+
+        change = cop.z - change;
+
+        bcp += change;
+        fcp += change;
     }
 
     public void setupUVN(Point3D vrp, Vector3D vpn, Vector3D vuv) {
@@ -79,8 +86,8 @@ public class PerspectiveCamera extends Camera {
     @Override
     public String toString() {
         return "Camera:\n"
-                + "fcp: " + getFrontClippingPlane() + "\n"
-                + "bcp: " + getBackClippingPlane() + "\n"
+                + "fcp: " + fcp + "\n"
+                + "bcp: " + bcp + "\n"
                 + "cop: " + cop + "\n"
                 + "vrp: " + vrp + "\n"
                 + "vpn: " + vpn + "\n"

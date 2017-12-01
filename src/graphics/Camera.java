@@ -8,9 +8,9 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class Camera {
-    private double xMin, xMax, yMin, yMax;
-    private double fcp, bcp;  // front & back clipping planes
-    private double ax, bx, ay, by;
+    public double xMin, xMax, yMin, yMax;
+    public double fcp, bcp;  // front & back clipping planes
+    public double ax, bx, ay, by;
 
 
     /**
@@ -63,36 +63,6 @@ public class Camera {
         by = deltaV / deltaY;
         ax = 0 - (bx * xMin);
         ay = 0 - (by * yMin);
-    }
-
-    public double getFrontClippingPlane() {
-        return fcp;
-    }
-
-    /**
-     * Sets the distance of the front clipping plane from the origin in
-     * world coordinates. Greater positive values set the front clipping
-     * plane further from the origin.
-     *
-     * @param fcp front clipping plane
-     */
-    public void setFrontClippingPlane(double fcp) {
-        this.fcp = fcp;
-    }
-
-    public double getBackClippingPlane() {
-        return bcp;
-    }
-
-    /**
-     * Sets the distance of the back clipping plane from the origin in world
-     * coordinates. Greater negative values set the back clipping plane
-     * further from the origin.
-     *
-     * @param bcp back clipping plane
-     */
-    public void setBackClippingPlane(double bcp) {
-        this.bcp = bcp;
     }
 
     @Override

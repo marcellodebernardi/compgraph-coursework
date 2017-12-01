@@ -60,9 +60,9 @@ class Scene {
         faces.reset();
         faces.sort(cam);
 
-        // eliminate back faces
+        // back face elimination and clipping
         for (int i = 0; i < faces.size(); i++)
-            if (isBackFace(faces.get(i), cam)) faces.elim(i);
+            if (isBackFace(faces.get(i), cam) || clip(faces.get(i), cam)) faces.elim(i);
 
         // draw surface normals of back faces
         if (drawSurfaceNormals)
@@ -99,6 +99,7 @@ class Scene {
         }
     }
 
+
     /* Checks if the face given as argument is a back face, as seen from the
     camera passed as the second argument. */
     private boolean isBackFace(Face face, Camera cam) {
@@ -109,29 +110,14 @@ class Scene {
         return Vector3D.dotProduct(face.surfNormal, viewVector) < 0;
     }
 
-    private boolean clip(Camera cam, Point3D... points) {
-        // todo proper clipping
-        // returns true if any of the points are beyond clipping planes
-        for (Point3D p : points) {
-            if (p.z < cam.getBackClippingPlane() || p.z > cam.getFrontClippingPlane())
+    /* Clips faces where at least one vertex is behind the camera. Better
+    results would be given by subdividing the faces. */
+    private boolean clip(Face face, Camera cam) {
+        for (Point3D p : face.vertices) {
+            if (p.z < cam.bcp || p.z > cam.fcp)
                 return true;
         }
         return false;
-    }
-
-    /* Applies shading the face passed as argument, by considering an ambient light
-    as well as a light source. */
-    private Color flatShade(Face face) {
-        Vector3D lightDirection = Vector3D.vector(face.centroid, lightSource);
-        double cosTheta = ((Vector3D.dotProduct(lightDirection, face.surfNormal)
-                / (Vector3D.L2norm(lightDirection) * Vector3D.L2norm(face.surfNormal))) + 1) / 2;
-
-        // todo fix out of bound values
-        int r = (int) (face.color.getRed() * cosTheta * sourceIntensity + ambientIntensity);
-        int g = (int) (face.color.getGreen() * cosTheta * sourceIntensity + ambientIntensity);
-        int b = (int) (face.color.getBlue() * cosTheta * sourceIntensity + ambientIntensity);
-
-        return new Color(r, g, b);
     }
 
     private void drawFace(Graphics gfx, Camera cam, Face face) {
@@ -153,6 +139,21 @@ class Scene {
                 (int) centroid.y,
                 (int) normalEnd.x,
                 (int) normalEnd.y);
+    }
+
+    /* Applies shading the face passed as argument, by considering an ambient light
+    as well as a light source. */
+    private Color flatShade(Face face) {
+        Vector3D lightDirection = Vector3D.vector(face.centroid, lightSource);
+        double cosTheta = ((Vector3D.dotProduct(lightDirection, face.surfNormal)
+                / (Vector3D.L2norm(lightDirection) * Vector3D.L2norm(face.surfNormal))) + 1) / 2;
+
+        // todo fix out of bound values
+        int r = (int) (face.color.getRed() * cosTheta * sourceIntensity + ambientIntensity);
+        int g = (int) (face.color.getGreen() * cosTheta * sourceIntensity + ambientIntensity);
+        int b = (int) (face.color.getBlue() * cosTheta * sourceIntensity + ambientIntensity);
+
+        return new Color(r, g, b);
     }
 
     @Override
