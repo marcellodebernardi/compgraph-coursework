@@ -2,6 +2,11 @@
 
 GitHub project for the **ECS610S Computer Graphics** module coursework.
 
+TODO:
+
+1. depth sorting
+2. camera rotation OR vertex normals
+
 
 ## SPECIFICATION
 The coursework consists of an animation in `java.awt`, incrementally

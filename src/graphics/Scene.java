@@ -13,6 +13,7 @@ import java.util.Arrays;
  */
 class Scene {
     private GObject[] objects;
+    private FaceArray faces;
     private Point3D lightSource;        // location of light in world coordinates
     private double sourceIntensity;     // intensity of light source
     private double ambientIntensity;    // intensity of ambient light
@@ -25,9 +26,12 @@ class Scene {
     Scene(String[] fileName) throws FileNotFoundException {
         objects = new GObject[fileName.length];
 
+
         for (int i = 0; i < fileName.length; i++) {
             objects[i] = new GObject(fileName[i]);
         }
+
+        faces = new FaceArray(objects);
 
         lightSource = new Point3D(3, 3, 3);
         sourceIntensity = 1;
@@ -53,43 +57,50 @@ class Scene {
      * @param gfx graphics
      */
     void draw(Camera cam, Graphics gfx) {
-        // todo z buffering for hidden surface occlusion
-        // todo refactor to make more legible
-        for (GObject object : objects) {
-            for (Face face : object.faces()) {
+        faces.reset();
+        faces.sort(cam);
 
-                if (drawSurfaceNormals) drawSurfaceNormals(gfx, cam, face);
+        // eliminate back faces
+        for (int i = 0; i < faces.size(); i++)
+            if (isBackFace(faces.get(i), cam)) faces.elim(i);
 
-                // back face removal
-                if (isBackFace(face, cam)) continue;
+        // draw surface normals of back faces
+        if (drawSurfaceNormals)
+            for (int i = 0; i < faces.size(); i++)
+                if (!faces.display(i)) drawSurfaceNormal(gfx, cam, faces.get(i));
 
-                /* if (clip(cam, faceVertices[0], faceVertices[1], faceVertices[2]))
-                    continue; */
+        // draw front faces and their surface normals
+        for (int i = 0; i < faces.size(); i++) {
+            if (!faces.display(i)) continue;
 
-                Point3D[] pixelPoints = cam.project(face.vertices);
+            Face face = faces.get(i);
+            Point3D[] pixelPoints = cam.project(face.vertices);
 
-                int[] xCoordinates = new int[pixelPoints.length];
-                int[] yCoordinates = new int[pixelPoints.length];
+            int[] xCoordinates = new int[pixelPoints.length];
+            int[] yCoordinates = new int[pixelPoints.length];
 
-                for (int i = 0; i < pixelPoints.length; i++) {
-                    xCoordinates[i] = (int) pixelPoints[i].x;
-                    yCoordinates[i] = (int) pixelPoints[i].y;
-                }
-
-                if (wireframe) {
-                    gfx.setColor(flatShade(face));
-                    gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
-                }
-                else {
-                    gfx.setColor(face.color);
-                    gfx.drawPolygon(xCoordinates, yCoordinates, pixelPoints.length);
-                }
-
-                if (drawVertexNormals) continue;
+            for (int j = 0; j < pixelPoints.length; j++) {
+                xCoordinates[j] = (int) pixelPoints[j].x;
+                yCoordinates[j] = (int) pixelPoints[j].y;
             }
+
+            if (wireframe) {
+                gfx.setColor(flatShade(face));
+                gfx.fillPolygon(xCoordinates, yCoordinates, pixelPoints.length);
+            }
+            else {
+                gfx.setColor(face.color);
+                gfx.drawPolygon(xCoordinates, yCoordinates, pixelPoints.length);
+            }
+
+            if (drawSurfaceNormals) drawSurfaceNormal(gfx, cam, face);
+
+            if (drawVertexNormals) continue;
         }
     }
 
+    /* Checks if the face given as argument is a back face, as seen from the
+    camera passed as the second argument. */
     private boolean isBackFace(Face face, Camera cam) {
         Vector3D viewVector = cam instanceof PerspectiveCamera ?
                 Vector3D.vector(face.centroid, ((PerspectiveCamera)cam).cop)
@@ -108,7 +119,8 @@ class Scene {
         return false;
     }
 
-    // calculates the color
+    /* Applies shading the face passed as argument, by considering an ambient light
+    as well as a light source. */
     private Color flatShade(Face face) {
         Vector3D lightDirection = Vector3D.vector(face.centroid, lightSource);
         double cosTheta = ((Vector3D.dotProduct(lightDirection, face.surfNormal)
@@ -126,7 +138,8 @@ class Scene {
 
     }
 
-    private void drawSurfaceNormals(Graphics gfx, Camera cam, Face face) {
+    /* Draws onto the screen the surface normal of the given face */
+    private void drawSurfaceNormal(Graphics gfx, Camera cam, Face face) {
         Point3D centroid = Point3D.copy(face.centroid);
         Point3D normalEnd = Point3D.copy(centroid);
         normalEnd.transform(new Matrix().setTranslation(face.surfNormal.x, face.surfNormal.y, face.surfNormal.z));
