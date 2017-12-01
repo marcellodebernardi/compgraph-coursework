@@ -101,10 +101,6 @@ public class PerspectiveAnimator extends ParallelAnimator {
                 camera.xMax--;
                 camera.currentZoom++;
                 break;
-            case VK_UP:
-            case VK_KP_UP:
-                // ((PerspectiveCamera)camera).translate(new Matrix().setRotationX(1));
-                break;
             // animation speed up
             case VK_0:
                 animationSpeed += 0.01;
