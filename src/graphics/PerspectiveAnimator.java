@@ -1,6 +1,5 @@
 package graphics;
 
-import geometry.Matrix;
 import geometry.Vector3D;
 
 import java.awt.event.KeyEvent;
@@ -16,6 +15,7 @@ import static java.awt.event.KeyEvent.*;
  */
 public class PerspectiveAnimator extends ParallelAnimator {
     private double movementSpeed = 1.0;
+
     /**
      * Constructs a new PerspectiveAnimator
      *
@@ -29,6 +29,7 @@ public class PerspectiveAnimator extends ParallelAnimator {
 
     /**
      * Application entry point
+     *
      * @param args unused
      */
     public static void main(String[] args) {
@@ -45,13 +46,14 @@ public class PerspectiveAnimator extends ParallelAnimator {
      */
     protected void setupCamera() {
         camera = new PerspectiveCamera(-5, 5, -5, 5);
-        camera.fcp = ((PerspectiveCamera)camera).cop.z;
+        camera.fcp = ((PerspectiveCamera) camera).cop.z;
         camera.bcp = camera.fcp - 50;
     }
 
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -63,24 +65,21 @@ public class PerspectiveAnimator extends ParallelAnimator {
             case VK_2:
                 scene.drawSurfaceNormals = !scene.drawSurfaceNormals;
                 break;
-            case VK_3:
-                scene.drawVertexNormals = !scene.drawVertexNormals;
-                break;
             // camera translations
             case VK_W:
-                ((PerspectiveCamera)camera).translate(new Vector3D(0, 0, -movementSpeed));
+                ((PerspectiveCamera) camera).translate(new Vector3D(0, 0, -movementSpeed));
                 System.out.println(camera);
                 break;
             case VK_A:
-                ((PerspectiveCamera)camera).translate(new Vector3D(-movementSpeed, 0,0));
+                ((PerspectiveCamera) camera).translate(new Vector3D(-movementSpeed, 0, 0));
                 System.out.println(camera);
                 break;
             case VK_D:
-                ((PerspectiveCamera)camera).translate(new Vector3D(movementSpeed, 0, 0));
+                ((PerspectiveCamera) camera).translate(new Vector3D(movementSpeed, 0, 0));
                 System.out.println(camera);
                 break;
             case VK_S:
-                ((PerspectiveCamera)camera).translate(new Vector3D(0, 0, movementSpeed));
+                ((PerspectiveCamera) camera).translate(new Vector3D(0, 0, movementSpeed));
                 System.out.println(camera);
                 break;
             // zoom out
@@ -114,5 +113,6 @@ public class PerspectiveAnimator extends ParallelAnimator {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 }

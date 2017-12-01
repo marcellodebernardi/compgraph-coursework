@@ -1,20 +1,21 @@
 package graphics;
 
+import geometry.Matrix;
+import geometry.Vector3D;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+
+import static java.awt.event.KeyEvent.*;
+
 /**
  * @author Marcello De Bernardi 01/10/2017.
  */
-
-import geometry.Matrix;
-
-import java.awt.*;
-import java.io.FileNotFoundException;
-
-import static java.lang.Math.PI;
-
 public class ParallelAnimator extends Animator {
-    protected Camera camera;
-    protected Scene scene;
-    protected double animationSpeed;
+    Camera camera;
+    Scene scene;
+    double animationSpeed;
     private String[] files = {"./models/cube.dat", "./models/pyramid.dat"};
 
 

@@ -78,16 +78,16 @@ public class Animator extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // todo
+        // unused
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // todo
+        // unused
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // todo
+        // unused
     }
 }

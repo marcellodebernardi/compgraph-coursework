@@ -9,10 +9,10 @@ import geometry.Vector3D;
  */
 public class PerspectiveCamera extends Camera {
     public Point3D cop;                // centre of projection, also origin of camera coordinates
-    public Vector3D vuv;               // view up vector (axis v)
-    public Matrix m;                   // camera transformation matrix
-    public Point3D vrp;                // view reference point: lies in view plane
-    public Vector3D vpn;               // view plane normal (axis u)
+    private Vector3D vuv;               // view up vector (axis v)
+    private Matrix m;                   // camera transformation matrix
+    private Point3D vrp;                // view reference point: lies in view plane
+    private Vector3D vpn;               // view plane normal (axis u)
 
 
     /**
@@ -34,6 +34,8 @@ public class PerspectiveCamera extends Camera {
         vuv = new Vector3D(0, 1, 0);
     }
 
+
+    @Override
     public Vector3D getViewPlaneNormal() {
         return vpn;
     }
@@ -53,7 +55,6 @@ public class PerspectiveCamera extends Camera {
     /**
      * Allows arbitrary translations on the center of projection, enabling
      * camera motion.
-     *
      */
     public void translate(Vector3D vector) {
         cop.add(vector);

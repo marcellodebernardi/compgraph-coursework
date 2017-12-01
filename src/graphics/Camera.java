@@ -8,10 +8,10 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class Camera {
-    public double xMin, xMax, yMin, yMax;
-    public double fcp, bcp;  // front & back clipping planes
-    public double ax, bx, ay, by;
-    public double currentZoom, maxZoom;
+    public double xMin, xMax, yMin, yMax;   // viewport bounds
+    public double fcp, bcp;                 // front & back clipping planes
+    public double currentZoom, maxZoom;     // zoom settings
+    private double ax, bx, ay, by;          // used in internal calculations
 
 
     /**
@@ -32,6 +32,11 @@ public class Camera {
         maxZoom = 4;
     }
 
+    /**
+     * Returns the vector normal to the view plane.
+     *
+     * @return vpn
+     */
     public Vector3D getViewPlaneNormal() {
         // in parallel projections VPN is a vector
         // pointing straight towards z
@@ -56,6 +61,13 @@ public class Camera {
         return newPoints;
     }
 
+    /**
+     * Sets the viewport variables that are used in mapping view plane
+     * coordinates to screen coordinates.
+     *
+     * @param width width of screen
+     * @param height height of screen
+     */
     public void setViewport(int width, int height) {
         int deltaU = width;
         int deltaV = height;

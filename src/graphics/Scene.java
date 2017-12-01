@@ -19,7 +19,6 @@ class Scene {
     private double ambientIntensity;    // intensity of ambient light
 
     public boolean drawSurfaceNormals;
-    public boolean drawVertexNormals;
     public boolean wireframe;
 
 
@@ -61,9 +60,11 @@ class Scene {
         faces.sort(cam);
 
         // back face elimination and clipping
-        for (int i = 0; i < faces.size(); i++)
+        for (int i = 0; i < faces.size(); i++) {
+            if (!(cam instanceof PerspectiveCamera)) break;
             if ((!wireframe) && (isBackFace(faces.get(i), cam) || clip(faces.get(i), cam)))
                 faces.elim(i);
+        }
 
         // draw surface normals of back faces
         if (drawSurfaceNormals)
@@ -95,8 +96,6 @@ class Scene {
             }
 
             if (drawSurfaceNormals) drawSurfaceNormal(gfx, cam, face);
-
-            if (drawVertexNormals) continue;
         }
     }
 

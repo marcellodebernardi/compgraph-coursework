@@ -110,7 +110,7 @@ public class FaceArray {
     @Override
     public String toString() {
         String result = "";
-        for (int i = 0; i <= faces.length; i++)
+        for (int i = 0; i < faces.length; i++)
             result += faces[i].toString() + ", ";
         return result;
     }
