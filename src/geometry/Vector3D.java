@@ -7,8 +7,14 @@ import static java.lang.Math.sqrt;
 /**
  * @author Marcello De Bernardi 25/09/2017.
  * <p>
- * Class representing a 3-dimensional vector. Vector3D is an immutable
- * class and does not support spurious changes.
+ * Class representing a vector in a three-dimensional space. Vector3D objects
+ * have mutable state.
+ *
+ * The class has static methods for performing operations
+ * on vectors that are best understood as resulting in new vectors.
+ * These methods operate constructively and return new vectors. Instance methods,
+ * on the other hand, modify the vector they are called on. They return a
+ * reference to the vector to enable method chaining.
  */
 public class Vector3D {
     public double x, y, z;
@@ -28,22 +34,17 @@ public class Vector3D {
     }
 
 
-    public static Vector3D copy(Vector3D v) {
-        return new Vector3D(v.x, v.y, v.z);
-    }
-
     /**
-     * Returns the vector between this point and the point passed as argument.
+     * Returns the vector from the first point to the second point.
      *
-     * @return new vector between this point and argument point
+     * @return vector from first point to second point
      */
     public static Vector3D vector(Point3D from, Point3D to){
         return new Vector3D(to.x - from.x, to.y - from.y, to.z - from.z);
     }
 
     /**
-     * Returns the cross product of the geometry.Vector3D it is called on with the
-     * geometry.Vector3D passed as argument.
+     * Returns the cross product of the first vector and the second vector.
      *
      * @return cross product of two vectors
      */
@@ -55,8 +56,7 @@ public class Vector3D {
     }
 
     /**
-     * Returns the dot product of the geometry.Vector3D it is called on with the
-     * geometry.Vector3D passed as argument.
+     * Returns the dot product of the first vector and the second vector.
      *
      * @return dot product of two vectors
      */
@@ -65,7 +65,7 @@ public class Vector3D {
     }
 
     /**
-     * Returns the norm of the vector
+     * Returns the length of the argument vector.
      *
      * @return norm of vector
      */
@@ -80,28 +80,21 @@ public class Vector3D {
      */
     Vector3D normalize() {
         double length = L2norm(this);
-        return new Vector3D(x / length, y / length, z / length);
+        x /= length;
+        y /= length;
+        z /= length;
+
+        return this;
     }
 
     /**
-     * Returns a vector that is the additive inverse of the vector this method is called on,
-     * i.e. a vector of the same length pointing in the opposite direction.
-     *
-     * @return opposite vector
-     */
-    Vector3D inverse() {
-        return new Vector3D(-x, -y, -z);
-    }
-
-    /**
-     * Returns a vector representing the transformation of this vector by a matrix passed as
-     * argument.
+     * Transforms this vector by the given transformation matrix.
      *
      * @param matrix transformation matrix
-     * @return a new vector transformed by the given matrix
+     * @return reference to this vector
      */
     @SuppressWarnings("Duplicates")
-    public void transform(Matrix matrix) {
+    public Vector3D transform(Matrix matrix) {
         double[][] m = matrix.m;
 
         // x, y, z and w are homogeneous coordinates of the new vector
@@ -114,6 +107,9 @@ public class Vector3D {
         this.x = x/w;
         this.y = y/w;
         this.z = z/w;
+
+        // allows method chaining
+        return this;
     }
 
     @Override
@@ -122,7 +118,7 @@ public class Vector3D {
     }
 
     @Override
-    public Vector3D clone() throws CloneNotSupportedException {
+    public Vector3D clone() {
         return new Vector3D(x, y, z);
     }
 

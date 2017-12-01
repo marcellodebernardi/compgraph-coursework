@@ -21,13 +21,6 @@ public class Matrix {
         return this;
     }
 
-    /**
-     * Returns a new geometry.Matrix representing the result of multiplying the matrix
-     * the method is called on by the matrix supplied as argument.
-     *
-     * @param a matrix to multiply this matrix on
-     * @return new matrix for multiplication result
-     */
     public Matrix multiply(Matrix a) {
         Matrix result = new Matrix();
 
@@ -108,11 +101,6 @@ public class Matrix {
         return this;
     }
 
-    /**
-     * Returns the inverse matrix of the matrix the method is called on.
-     *
-     * @return inverse matrix
-     */
     public Matrix inverse() {
         double det;
         int i, j;

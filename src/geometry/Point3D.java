@@ -6,7 +6,14 @@ import static java.lang.Math.sqrt;
 /**
  * @author Marcello De Bernardi 25/09/2017.
  * <p>
- * Class representing a point in a three-dimensional space.
+ * Class representing a point in a three-dimensional space. Point3D objects
+ * have mutable state.
+ *
+ * The class has static methods for performing operations
+ * on points that aren't best understood as modifications to a particular
+ * point. Instance methods, on the other hand, modify the point they
+ * are called on. They return a reference to the point to enable
+ * method chaining.
  */
 public class Point3D {
     public double x, y, z;
@@ -27,10 +34,6 @@ public class Point3D {
     }
 
 
-    public static Point3D copy(Point3D p) {
-        return new Point3D(p.x, p.y, p.z);
-    }
-
     /**
      * Returns the distance in 3d space between the point on which
      * the method is called, and the point passed as argument.
@@ -42,11 +45,26 @@ public class Point3D {
     }
 
     /**
-     * Returns a point representing the transformation of the point this method is called on
-     * by a matrix passed as argument.
+     * Translates this point by a given vector. Mutates the state of the
+     * point.
      *
-     * @param matrix translate matrix
-     * @return new point
+     * @param vector translation vector
+     * @return reference to this same point
+     */
+    public Point3D add(Vector3D vector) {
+        x += vector.x;
+        y += vector.y;
+        z += vector.z;
+
+        return this;
+    }
+
+    /**
+     * Transforms the point by the given transformation matrix. This
+     * method changes the state of the point.
+     *
+     * @param matrix transformation matrix
+     * @return reference to same point
      */
     @SuppressWarnings("Duplicates")
     public Point3D transform(Matrix matrix) {
@@ -67,17 +85,14 @@ public class Point3D {
         return this;
     }
 
-    public Point3D add(Vector3D vector) {
-        x += vector.x;
-        y += vector.y;
-        z += vector.z;
-
-        return this;
-    }
-
     @Override
     public String toString() {
         return ("Point (x,y,z) = (" + x + ", " + y + ", " + z + ")");
+    }
+
+    @Override
+    public Point3D clone() {
+        return new Point3D(x, y, z);
     }
 
     @Override

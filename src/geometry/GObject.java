@@ -13,8 +13,8 @@ import java.util.Scanner;
  * @author Marcello De Bernardi 26/09/2017.
  */
 public class GObject {
-    private Point3D[] vertices;
-    private Face[] faces;
+    public Point3D[] vertices;
+    public Face[] faces;
 
 
     /**
@@ -116,24 +116,6 @@ public class GObject {
         }
     }
 
-
-    /**
-     * Returns the array of vertices of this geometry.GObject.
-     *
-     * @return vertex array
-     */
-    public Point3D[] vertices() {
-        return vertices;
-    }
-
-    /**
-     * Returns the array of faces of this geometry.GObject.
-     *
-     * @return face array
-     */
-    public Face[] faces() {
-        return faces;
-    }
 
     /**
      * Transforms the geometry.GObject by the matrix given as argument

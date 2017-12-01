@@ -127,8 +127,8 @@ class Scene {
 
     /* Draws onto the screen the surface normal of the given face */
     private void drawSurfaceNormal(Graphics gfx, Camera cam, Face face) {
-        Point3D centroid = Point3D.copy(face.centroid);
-        Point3D normalEnd = Point3D.copy(centroid);
+        Point3D centroid = face.centroid.clone();
+        Point3D normalEnd = centroid.clone();
         normalEnd.transform(new Matrix().setTranslation(face.surfNormal.x, face.surfNormal.y, face.surfNormal.z));
 
         centroid = cam.project(centroid)[0];

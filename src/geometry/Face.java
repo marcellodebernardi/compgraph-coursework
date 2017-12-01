@@ -4,8 +4,9 @@ import java.awt.*;
 import java.util.Arrays;
 
 /**
- * A geometry.Face is a single polygon in a mesh. A geometry.Face consists of a color as well
- * as a set of vertices which define it.
+ * A geometry.Face is a single polygon in a mesh. A geometry.Face consists of a color,
+ * the set of vertices defining it, the polygon's centroid vertex, and its
+ * surface normal.
  *
  * @author Marcello De Bernardi 26/09/2017.
  */
@@ -34,7 +35,7 @@ public class Face {
     /**
      * Calculates and sets the centroid of the face.
      */
-    public void computeCentroid() {
+    public Face computeCentroid() {
         double xAvg = 0;
         double yAvg = 0;
         double zAvg = 0;
@@ -49,21 +50,21 @@ public class Face {
                 xAvg / vertices.length,
                 yAvg / vertices.length,
                 zAvg / vertices.length);
+
+        return this;
     }
 
     /**
      * Computes the face surface's normal vector based on two vectors that
      * define the plane of the face.
      */
-    public void computeFaceNormal() {
+    public Face computeFaceNormal() {
         Vector3D v1 = Vector3D.vector(vertices[0], (vertices[1]));
         Vector3D v2 = Vector3D.vector(vertices[0], (vertices[2]));
 
         surfNormal = Vector3D.crossProduct(v1, v2).normalize();
-    }
 
-    public boolean isFrontFace(Vector3D viewplaneNormal) {
-        return Vector3D.dotProduct(surfNormal, viewplaneNormal) > 0;
+        return this;
     }
 
     @Override
