@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="compgraph-coursework:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/compgraph_coursework_jar</output-path>
+    <root id="archive" name="compgraph-coursework.jar">
+      <element id="module-output" name="compgraph-coursework" />
+      <element id="dir-copy" path="$PROJECT_DIR$/models" />
+    </root>
+  </artifact>
+</component>

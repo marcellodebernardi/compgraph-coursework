@@ -1,4 +1,3 @@
-import graphics.Animator;
 import graphics.PerspectiveAnimator;
 
 import java.io.FileNotFoundException;
@@ -7,9 +6,6 @@ import java.io.FileNotFoundException;
  * @author Marcello De Bernardi 01/12/2017.
  */
 public class Main {
-    private static Animator animator;
-
-
     public static void main(String[] args) {
         System.out.println("---------------------------");
         System.out.println(" Marcello De Bernardi");
@@ -24,8 +20,7 @@ public class Main {
         System.out.println("e: zoom in");
 
         try {
-            animator = new PerspectiveAnimator();
-            animator.start();
+            new PerspectiveAnimator().start();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();

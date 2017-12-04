@@ -8,7 +8,7 @@ import geometry.Vector3D;
  * @author Marcello De Bernardi 01/10/2017.
  */
 public class PerspectiveCamera extends Camera {
-    public Point3D cop;                // centre of projection, also origin of camera coordinates
+    public Point3D cop;                 // centre of projection, also origin of camera coordinates
     private Vector3D vuv;               // view up vector (axis v)
     private Matrix m;                   // camera transformation matrix
     private Point3D vrp;                // view reference point: lies in view plane

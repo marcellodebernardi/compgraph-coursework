@@ -12,23 +12,21 @@ import java.util.Arrays;
  * A Scene consists of an array of GObjects
  */
 class Scene {
+    public boolean drawSurfaceNormals;
+    public boolean wireframe;
     private GObject[] objects;
     private FaceArray faces;
     private Point3D lightSource;        // location of light in world coordinates
     private double sourceIntensity;     // intensity of light source
     private double ambientIntensity;    // intensity of ambient light
 
-    public boolean drawSurfaceNormals;
-    public boolean wireframe;
-
 
     Scene(String[] fileName) throws FileNotFoundException {
         objects = new GObject[fileName.length];
 
 
-        for (int i = 0; i < fileName.length; i++) {
+        for (int i = 0; i < fileName.length; i++)
             objects[i] = new GObject(fileName[i]);
-        }
 
         faces = new FaceArray(objects);
 
@@ -104,7 +102,7 @@ class Scene {
     camera passed as the second argument. */
     private boolean isBackFace(Face face, Camera cam) {
         Vector3D viewVector = cam instanceof PerspectiveCamera ?
-                Vector3D.vector(face.centroid, ((PerspectiveCamera)cam).cop)
+                Vector3D.vector(face.centroid, ((PerspectiveCamera) cam).cop)
                 : cam.getViewPlaneNormal();
 
         return Vector3D.dotProduct(face.surfNormal, viewVector) < 0;
@@ -120,7 +118,7 @@ class Scene {
         return false;
     }
 
-    private void drawFace(Graphics gfx, Camera cam, Face face) {
+    private void drawFace(Graphics gfx, Camera cam, Face face, boolean wireframe) {
 
     }
 
